@@ -29,22 +29,22 @@ export default function App() {
   {/* Try Demo Button */}   
   <br />
   <a
-    href="https://www.figma.com/proto/t4QZKpzfCLU7gACNGCeujK/Welcome-Screen--Community-?node-id=4-8&t=zOogO8SF6CHrGVRG-1
-    target="_blank"
-    rel="noopener noreferrer"
-    style={{
-      display: "inline-block",
-      padding: "12px 20px",
-      backgroundColor: "#7C3AED",
-      color: "white",
-      borderRadius: "8px",
-      textDecoration: "none",
-      marginTop: "12px",
-      fontWeight: "bold"
-    }}
-  >
-    Try Demo
-  </a>
+  href="https://www.figma.com/proto/t4QZKpzfCLU7gACNGCeujK/Welcome-Screen--Community?node-id=4-8&t=..."
+  target="_blank"
+  rel="noopener noreferrer"
+  style={{
+    display: "inline-block",
+    padding: "12px 20px",
+    backgroundColor: "#7C3AED",
+    color: "white",
+    borderRadius: "8px",
+    textDecoration: "none",
+    marginTop: "12px",
+    fontWeight: "bold"
+  }}
+>
+  Try Demo
+</a>
 </div>
       ) : (
         <div style={{ maxWidth: "700px", margin: "0 auto" }}>
