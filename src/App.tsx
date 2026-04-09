@@ -6,7 +6,7 @@ export default function App() {
   return (
     <div style={{ fontFamily: "Arial", padding: "40px" }}>
       {!started ? (
-       div style={{ textAlign: "center" }}>
+       <div style={{ textAlign: "center" }}>
   <h1>🧠 NeuroRead</h1>
   <p>AI-powered reading support for neurodiverse learners.</p>
 
