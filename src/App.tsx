@@ -6,10 +6,11 @@ export default function App() {
   return (
     <div style={{ fontFamily: "Arial", padding: "40px" }}>
       {!started ? (
-       <div style={{ textAlign: "center" }}>
+       div style={{ textAlign: "center" }}>
   <h1>🧠 NeuroRead</h1>
   <p>AI-powered reading support for neurodiverse learners.</p>
 
+  {/* Start Reading Button */}
   <button
     onClick={() => setStarted(true)}
     style={{
@@ -25,8 +26,8 @@ export default function App() {
     Start Reading
   </button>
 
+  {/* Try Demo Button */}   
   <br />
-
   <a
     href="https://www.figma.com/proto/t4QZKpzfCLU7gACNGCeujK/Welcome-Screen--Community-?node-id=4-8&t=zOogO8SF6CHrGVRG-1
     target="_blank"
@@ -38,13 +39,13 @@ export default function App() {
       color: "white",
       borderRadius: "8px",
       textDecoration: "none",
-      marginTop: "12px"
-      fontWeight:  "bold"
+      marginTop: "12px",
+      fontWeight: "bold"
     }}
   >
     Try Demo
   </a>
-       </div>
+</div>
       ) : (
         <div style={{ maxWidth: "700px", margin: "0 auto" }}>
           <h1>Reading Practice</h1>
