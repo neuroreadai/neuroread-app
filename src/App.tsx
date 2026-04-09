@@ -31,7 +31,7 @@ export default function App() {
           <p>
             Welcome to NeuroRead. This is your first reading screen.
           </p>
-div
+          <div
             style={{
               marginTop: "20px",
               padding: "20px",
