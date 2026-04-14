@@ -43,7 +43,7 @@ export default function App() {
     fontWeight: "bold"
   }}
 >
-  Start Early Access-$29
+  Start Early Access - $29
 </a>
 <p style={{ marginTop: "10px",fontSize:"14px" }}>
   Personalized AI reading support<br />
