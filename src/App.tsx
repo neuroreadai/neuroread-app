@@ -46,9 +46,9 @@ export default function App() {
   Start Early Access - $29
 </a>
 <p style={{ marginTop: "10px",fontSize:"14px" }}>
-  Personalized AI reading support<br />
-  Built for neurodiverse learners<br />
-  Improve focus,comprehension, and confidence
+ ✔ Personalized AI reading support<br />
+ ✔ Built for neurodiverse learners<br />
+ ✔ Improve focus,comprehension, and confidence
 </p> 
          
 <p style={{ color: "red",
