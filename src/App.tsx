@@ -26,10 +26,10 @@ export default function App() {
     Start Reading
   </button>
 
-  {/* Try Demo Button */}   
+  <button>Start Free Demo</button>
   <br />
   <a
-  href="https://www.figma.com/proto/t4QZKpzfCLU7gACNGCeujK/Welcome-Screen--Community?node-id=4-8&t=..."
+  href="https://buy.stripe.com/4gM9AUd2bdvpd0q17y4c800"
   target="_blank"
   rel="noopener noreferrer"
   style={{
@@ -43,7 +43,7 @@ export default function App() {
     fontWeight: "bold"
   }}
 >
-  Try Demo
+  Upgrade to Premium
 </a>
 </div>
       ) : (
