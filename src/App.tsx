@@ -43,8 +43,18 @@ export default function App() {
     fontWeight: "bold"
   }}
 >
-  Upgrade to Premium
+  Start Early Access-$29
 </a>
+<p style={{ marginTop: "10px",fontSize:"14px" }}>
+  Personalized AI reading support<br />
+  Built for neurodiverse learners<br />
+  Improve focus,comprehension, and confidence
+</p> 
+         
+<p style={{ color: "red",
+fontWeight: "bold" }}>
+   Limited early access spots available
+</p>
 </div>
       ) : (
         <div style={{ maxWidth: "700px", margin: "0 auto" }}>
