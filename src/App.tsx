@@ -80,8 +80,14 @@ fontWeight: "bold" }}>
           {!showPaywall ? (
           <button onClick={ () =>
             setShowPaywall(true)}
-            style={{ marginTop: "20px", padding: "10px 18px", backgroundColor: "#111827",
-                    color: "white", border: "none", borderRadius: "8px", cursor: "pointer", fontWeight: "bold" }}
+            style={{ marginTop: "20px"
+              padding: "10px 18px",
+          backgroundColor: "#111827",
+                    color: "white",
+          border: "none",
+          borderRadius: "8px",
+          cursor: "pointer", 
+          fontWeight: "bold" }}
             >
             Continue
           </button>
@@ -101,7 +107,7 @@ fontWeight: "bold" }}>
           </ul>
           <a
             href="https://buy.stripe.com/4gM9AUd2bdvpd0q17y4c800"
-            target="_"blank" 
+            target="_blank" 
             rel="noopener noreferrer"
             style={{ display: "inline-block",
                     padding: "12px 20px",
