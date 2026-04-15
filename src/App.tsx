@@ -101,9 +101,17 @@ fontWeight: "bold" }}>
           </ul>
           <a
             href="https://buy.stripe.com/4gM9AUd2bdvpd0q17y4c800"
-            target="_"blank" rel="noopener noreferrer"
-            style={{ display: "inline-block", padding: "12px 20px", backgroundColor: "#7C3AED",
-                    color: "white", borderRadius: "8px", textDecoration: "none", fontWeight: "bold", marginTop: "10px" }}
+            target="_"blank" 
+            rel="noopener noreferrer"
+            style={{ display: "inline-block",
+                    padding: "12px 20px",
+                    backgroundColor: "#7C3AED",
+                    color: "white", 
+                    borderRadius: "8px",
+                    textDecoration: "none",
+                    fontWeight: "bold", 
+                    marginTop: "10px"
+                   }}
           >
           Start Early Access - $29
         </div>
