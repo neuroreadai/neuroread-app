@@ -142,5 +142,4 @@ fontWeight: "bold" }}>
         </div>
     )}
     </div>
-  );
-}
+  )}
