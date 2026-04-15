@@ -2,6 +2,7 @@ import { useState } from "react";
 
 export default function App() {
   const [started, setStarted] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
 
   return (
     <div style={{ fontFamily: "Arial", padding: "40px" }}>
@@ -76,9 +77,42 @@ fontWeight: "bold" }}>
             learners hear words, understand vocabulary, and build confidence one
             sentence at a time.
           </div>
+          {!showPaywall ? (
+          <button onClick={ () =>
+            setShowPaywall(true)}
+            style={{ marginTop: "20px", padding: "10px 18px", backgroundColor: "#111827",
+                    color: "white", border: "none", borderRadius: "8px", cursor: "pointer", fontWeight: "bold" }}
+            >
+            Continue
+          </button>
+          ) : (
+          <div
+            style={{
+              marginTop: "24px", padding: "20px", border: "2px solid #7C3AED", borderRadius: "12px", backgroundColor: "faf5ff"
+                textAlign: "center" }}
+          >
+          <h2> Unlock Full NeuroRead</h2>
+           <p> Continue your personalized AI reading journey designed for neurodiverse learners.
+           </p>
+          <ul style={{ listStyle: "none", padding: 0, lineHeight: "1.6" }}>
+            <li> Personalized AI reading support </li>
+            <li> Built for neurodiverse learners </li>
+            <li> Improve focus, comprehension,  and confidence </li>
+          </ul>
+          <a
+            href="https://buy.stripe.com/4gM9AUd2bdvpd0q17y4c800"
+            target="_"blank" rel="noopener noreferrer"
+            style={{ display: "inline-block", padding: "12px 20px", backgroundColor: "#7C3AED",
+                    color: "white", borderRadius: "8px", textDecoration: "none", fontWeight: "bold", marginTop: "10px" }}
+          >
+          Start Early Access - $29
+        </div>
+      )}
 
           <button
             onClick={() => setStarted(false)}
+            setShowPaywall(false);}}
+            
             style={{
               padding: "10px 16px",
               marginTop: "20px",
