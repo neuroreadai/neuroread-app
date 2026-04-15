@@ -120,13 +120,13 @@ fontWeight: "bold" }}>
                    }}
           >
           Start Early Access - $29
+          </a>
         </div>
       )}
 
           <button
             onClick={() => {setStarted(false);
             setShowPaywall(false);}}
-            
             style={{
               padding: "10px 16px",
               marginTop: "20px",
