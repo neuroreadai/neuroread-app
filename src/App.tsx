@@ -88,7 +88,7 @@ fontWeight: "bold" }}>
           ) : (
           <div
             style={{
-              marginTop: "24px", padding: "20px", border: "2px solid #7C3AED", borderRadius: "12px", backgroundColor: "faf5ff"
+              marginTop: "24px", padding: "20px", border: "2px solid #7C3AED", borderRadius: "12px", backgroundColor: "faf5ff",
                 textAlign: "center" }}
           >
           <h2> Unlock Full NeuroRead</h2>
@@ -110,7 +110,7 @@ fontWeight: "bold" }}>
       )}
 
           <button
-            onClick={() => setStarted(false)}
+            onClick={() => {setStarted(false);
             setShowPaywall(false);}}
             
             style={{
