@@ -80,7 +80,7 @@ fontWeight: "bold" }}>
           {!showPaywall ? (
           <button onClick={ () =>
             setShowPaywall(true)}
-            style={{ marginTop: "20px"
+            style={{ marginTop: "20px",
               padding: "10px 18px",
           backgroundColor: "#111827",
                     color: "white",
