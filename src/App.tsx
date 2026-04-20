@@ -16,8 +16,9 @@ export default function App() {
       <div style={{ maxWidth:
      "700px", margin: "0 auto",
      textAlign: "center" }}>
+        const emoji="🎉";
         <h1> Welcome to NeuroRead Early
-          Access{"\u{1F389}"} </h1>
+          Access {🎉} </h1> 
           
         <p style={{ fontSize: "18px", marginTop: "16px }}>
         Your payment was received successfully.
