@@ -74,7 +74,7 @@ export default function App() {
       </div>
       <button
      onClick={() =>
-  (window.location.href = "/? start=true"
+  (window.location.href = "/?start=true"
    )}
       style={{
         marginTop: "24px",
