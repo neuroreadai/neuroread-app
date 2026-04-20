@@ -119,14 +119,14 @@ fontWeight: "bold" }}>
             <span style={{ color: "#22c55e", marginRight: "8px" }}
               >
               {"\u2713"}
-            </span>span>
+            </span>
              Built for neurodiverse learners
               </li>
             <li>
             <span style={{ color: "#22c55e", marginRight: "8px" }}
               >
               {"\u2713"}
-            </span>span>
+            </span>
               Improve focus, comprehension,  and confidence
             </li>
           </ul> 
