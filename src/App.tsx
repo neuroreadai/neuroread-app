@@ -23,7 +23,8 @@ export default function App() {
           
       <p style={{ fontWeight: "bold",
       marginTop: "10px", color:
-        "#2e7d32" }}>
+        "#2e7d32",
+         fontSize: "16px" }}>
       ✅ Your early access spot is confirmed. 
       </p>
       <p style={{ marginTop: "12px", lineHeight: "1.7" }}>
@@ -32,7 +33,7 @@ export default function App() {
       <p style={{ fontWeight: "bold",
       marginTop: "16px",
        fontSize: "16px" }}>
-        You're helping shape the future of reading for neurodiverse learners.
+        You're helping to shape the future of reading for neurodiverse learners.
       </p> 
     <div
     style={{
@@ -46,6 +47,11 @@ export default function App() {
     >
       <h3> What happens next
       </h3>
+    <p style={{ color: "#d32f2f",
+    marginTop: "12px", 
+    fontWeight: "500" }}>
+     Limited early access spots are filling quickly.
+    </p> 
     
     <ul style={{ lineHeight: "1.8" }}>
     <li> You'll receive confirmation and onboarding details.</li>
@@ -72,7 +78,7 @@ export default function App() {
           </button>
         <p style={{ fontSize: "13px",
          color: "#666", marginTop:
-         "10px" }}> 
+         "24px" }}> 
           Check your email for your access details.
         </p> 
           </div>
