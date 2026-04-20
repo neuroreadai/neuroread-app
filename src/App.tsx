@@ -64,7 +64,7 @@ export default function App() {
           </button>
           </div>
   
-      {!started ? (
+      ) : ! started ? ( 
        <div style={{ textAlign: "center" }}>
   <h1>🧠 NeuroRead</h1>
   <p>AI-powered reading support for neurodiverse learners.</p>
