@@ -1,16 +1,32 @@
 import { useState } from "react";
 
 export default function App() {
-  const [started, setStarted] = useState(false);
-  const [showPaywall, setShowPaywall] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
-  const isSuccessPage=
-    typeof window !== "undefined"
-  &&
+  const isSuccessPage =
+    typeof window !==
+"undefined" &&
     new
-    URLSearchParams(window.location.
-    search).get("success") ===
-    "true"
+ URLSearchParams(window.location.
+ search).get("success")===
+  "true";
+  const shouldStartReading=
+    typeof window !==
+  "undefined" &&
+    new
+ URLSearchParams(window.location.
+  search).get("start")==="true"
+  
+  const shouldStartReading=
+    typeof window !==
+  "undefined" &&
+    new
+  URLSearchParams(window.location.
+  search).get("start")=== "true"
+  const [started, setStarted]=
+ useState(shouldStartReading);
+  const [showPaywall,
+  setShowPaywall]=
+  useState(false);
+    
   return (
     <div style={{ fontFamily: "Arial", padding: "40px" }}>
       {isSuccessPage ? (
@@ -64,7 +80,8 @@ export default function App() {
       </div>
       <button
      onClick={() =>
-  (window.location.href = "/")}
+  (window.location.href = "/?
+   start=true" )}
       style={{
         marginTop: "24px",
         padding: "12px 20px",
