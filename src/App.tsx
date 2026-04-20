@@ -68,8 +68,13 @@ export default function App() {
         fontWeight: "bold"
       }}
      >
-        Start Exploring NeuroRead 
+        Start Your Reading Journey 
           </button>
+        <p style={{ fontSize: "13px",
+         color: "#666", marginTop:
+         "10px" }}> 
+          Check your email for your access details.
+        </p> 
           </div>
   
       ) : ! started ? ( 
