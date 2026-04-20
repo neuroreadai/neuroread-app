@@ -25,9 +25,7 @@ export default function App() {
         Your early access spot is confirmed. 
       </p>
       <p style={{ marginTop: "12px", lineHeight: "1.7" }}>
-      Thank you for joining 
-      NeuroRead Early Access. We'll follow up with your
-      onboarding details and next steps.
+      You're officially part of NeuroRead Early Access. We'll follow up shortly with your onboarding details and next steps.
     </p>
     <div
     style={{
@@ -63,7 +61,7 @@ export default function App() {
         fontWeight: "bold"
       }}
      >
-        Return to Home 
+        Start Exploring NeuroRead 
           </button>
           </div>
   
