@@ -3,9 +3,65 @@ import { useState } from "react";
 export default function App() {
   const [started, setStarted] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const isSuccessPage=
+    typeof window !== "undefined"
+  &&
+    window.location.pathname===
+    "/success";
 
   return (
     <div style={{ fontFamily: "Arial", padding: "40px" }}>
+      {isSuccessPage ? (
+      <div style={{ maxWidth:
+     "700px", margin: "0 auto",
+     textAlign: "center" }}>
+        <h1> Welcome to NeuroRead Early Access {"\u{1F389}"}
+        </h1>
+        <p style={{ fontSize: "18px", marginTop: "16px }}>
+        Your payment was received successfully.
+      </p>
+      <p style={{ marginTop: "12px", lineHeight: "1.7" }}>
+      Thank you for joining 
+      NeuroRead Early Access. We'll follow up with your
+      onboarding details and next steps.
+    </p>
+    <div
+    style={{
+    marginTop: "24px",
+    padding: "20px",
+    border: "1px solid #ddd",
+    borderRadius: "12px",
+    backgroundColor:
+      "#f9f9f9",
+    textAlign: "left" }}
+    >
+      <h3> What happens next
+      </h3>
+    <ul style={{ lineHeight: "1.8" }}>
+    <li> You'll receive confirmation and onboarding details.</li>
+    <li> You'll be among the first users helping shape the product.</li>
+      </ul>
+      </div>
+      <button
+     onClick={() =>
+  (window.location.href = "/")}
+      style={{
+        marginTop: "24px",
+        padding: "12px 20px",
+        backgroundColor:
+          "#7C3AED",
+        color: "white",
+        border: "none",
+        borderRadius: "8px",
+        cursor: "pointer",
+        fontWeight: "bold"
+      }}
+     >
+        Return to Home 
+          </button>
+          </div>
+  
       {!started ? (
        <div style={{ textAlign: "center" }}>
   <h1>🧠 NeuroRead</h1>
