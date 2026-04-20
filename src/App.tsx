@@ -13,14 +13,8 @@ export default function App() {
   "undefined" &&
     new
  URLSearchParams(window.location.
-  search).get("start")==="true"
+  search).get("start")=== "true";
   
-  const shouldStartReading=
-    typeof window !==
-  "undefined" &&
-    new
-  URLSearchParams(window.location.
-  search).get("start")=== "true"
   const [started, setStarted]=
  useState(shouldStartReading);
   const [showPaywall,
