@@ -37,7 +37,9 @@ export default function App() {
       </p> 
       <p style={{ color: "#d32f2f",
       marginTop: "12px",
-      fontWeight: "500" }}>
+      fontWeight: "600",
+      textAlign: "center" 
+       }}>
         Limited early access spots are filling fast.
       </p> 
     <div
