@@ -17,8 +17,7 @@ export default function App() {
      "700px", margin: "0 auto",
      textAlign: "center" }}>
         <h1> Welcome to NeuroRead Early
-          Access{"\u{1F389}"} 
-        </h1>
+          Access{"\u{1F389}"} </h1>
           
         <p style={{ fontSize: "18px", marginTop: "16px }}>
         Your payment was received successfully.
