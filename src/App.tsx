@@ -18,9 +18,9 @@ export default function App() {
      textAlign: "center" }}>
         const emoji="🎉";
         <h1> Welcome to NeuroRead Early
-          Access {emoji} </h1> 
+          Access {emoji}</h1> 
           
-      <p style={{ fontSize: "18px", marginTop: "16px }}>
+      <p style={{ fontSize: "18px", marginTop: "16px" }}>
         Your payment was received successfully.
       </p>
       <p style={{ marginTop: "12px", lineHeight: "1.7" }}>
