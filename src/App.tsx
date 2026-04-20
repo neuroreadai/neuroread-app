@@ -131,8 +131,6 @@ fontWeight: "bold" }}>
             </li>
           </ul> 
             
-            <li> Improve focus, comprehension,  and confidence </li>
-          </ul>
           <a
             href="https://buy.stripe.com/4gM9AUd2bdvpd0q17y4c800"
             target="_blank" 
@@ -170,4 +168,6 @@ fontWeight: "bold" }}>
         </div>
     )}
     </div>
-  )}
+    );
+}
+  
