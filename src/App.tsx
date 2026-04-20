@@ -35,6 +35,11 @@ export default function App() {
        fontSize: "16px" }}>
         You're helping to shape the future of reading for neurodiverse learners.
       </p> 
+      <p style={{ color: "#d32f2f",
+      marginTop: "12px",
+      fontWeight: "500" }}>
+        Limited early access spots are filling fast.
+      </p> 
     <div
     style={{
     marginTop: "24px",
@@ -47,11 +52,7 @@ export default function App() {
     >
       <h3> What happens next
       </h3>
-    <p style={{ color: "#d32f2f",
-    marginTop: "12px", 
-    fontWeight: "500" }}>
-     Limited early access spots are filling quickly.
-    </p> 
+    
     
     <ul style={{ lineHeight: "1.8" }}>
     <li> You'll receive confirmation and onboarding details.</li>
