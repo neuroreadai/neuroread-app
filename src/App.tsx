@@ -98,7 +98,7 @@ fontWeight: "bold" }}>
                 textAlign: "center" }}
           >
           <h2> Unlock Full NeuroRead</h2>
-           <p> Continue your personalized AI reading journey designed for neurodiverse learners.
+           <p> Unlock personalized AI reading support designed to help neurodiverse learners build confidence, focus, and comprehension. 
            </p>
           <ul style={{ listStyle: "none", padding: 0, lineHeight: "1.6" }}>
             <li> Personalized AI reading support </li>
