@@ -89,7 +89,7 @@ fontWeight: "bold" }}>
           cursor: "pointer", 
           fontWeight: "bold" }}
             >
-            Continue Reading ->
+            Continue Reading &rarr;
           </button>
           ) : (
           <div
