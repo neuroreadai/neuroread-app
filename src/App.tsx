@@ -30,7 +30,8 @@ export default function App() {
       You're officially part of NeuroRead Early Access. We'll follow up shortly with your onboarding details and next steps.
     </p>
       <p style={{ fontWeight: "bold",
-      marginTop: "12px" }}>
+      marginTop: "16px",
+       fontSize: "16px" }}>
         You're helping shape the future of reading for neurodiverse learners.
       </p> 
     <div
