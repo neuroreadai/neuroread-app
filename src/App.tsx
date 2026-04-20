@@ -22,11 +22,15 @@ export default function App() {
           Access 🎉 </h1> 
           
       <p style={{ fontSize: "18px", marginTop: "16px" }}>
-        Your early access spot is confirmed. 
+      ✅ Your early access spot is confirmed. 
       </p>
       <p style={{ marginTop: "12px", lineHeight: "1.7" }}>
       You're officially part of NeuroRead Early Access. We'll follow up shortly with your onboarding details and next steps.
     </p>
+      <p style={{ fontWeight: "bold",
+      marginTop: "12px" }}>
+        You're helping shape the future of reading for neurodiverse learners.
+      </p> 
     <div
     style={{
     marginTop: "24px",
@@ -37,7 +41,7 @@ export default function App() {
       "#f9f9f9",
     textAlign: "left" }}
     >
-      <h3> Next steps 
+      <h3> What happens next
       </h3>
     
     <ul style={{ lineHeight: "1.8" }}>
