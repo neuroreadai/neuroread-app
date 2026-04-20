@@ -106,14 +106,31 @@ fontWeight: "bold" }}>
             marginTop: "16px",
             textAlign: "left",
             display: "inline-block"
-          }}>
+          }}
+          >
             <li style={{ marginBottom: "8px" }}>
               <span style={{ color: "22c55e", marginRight: "8px" }}
             >
                 {"\u2713"}
               </span>
-            <li> Personalized AI reading support </li>
-            <li> Built for neurodiverse learners </li>
+             Personalized AI reading support
+            </li>
+            <li style={{ marginBottom: "8px" }} >
+            <span style={{ color: "#22c55e", marginRight: "8px" }}
+              >
+              {"\u2713"}
+            </span>span>
+             Built for neurodiverse learners
+              </li>
+            <li>
+            <span style={{ color: "#22c55e", marginRight: "8px" }}
+              >
+              {"\u2713"}
+            </span>span>
+              Improve focus, comprehension,  and confidence
+            </li>
+          </ul> 
+            
             <li> Improve focus, comprehension,  and confidence </li>
           </ul>
           <a
