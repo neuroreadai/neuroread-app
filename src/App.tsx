@@ -22,7 +22,7 @@ export default function App() {
           Access 🎉 </h1> 
           
       <p style={{ fontSize: "18px", marginTop: "16px" }}>
-        Your payment was received successfully.
+        Your early access spot is confirmed. 
       </p>
       <p style={{ marginTop: "12px", lineHeight: "1.7" }}>
       Thank you for joining 
@@ -39,11 +39,13 @@ export default function App() {
       "#f9f9f9",
     textAlign: "left" }}
     >
-      <h3> What happens next
+      <h3> Next steps 
       </h3>
+    
     <ul style={{ lineHeight: "1.8" }}>
     <li> You'll receive confirmation and onboarding details.</li>
     <li> You'll be among the first users helping shape the product.</li>
+    <li> We'll contact you with access details and updates as new features roll out.</li>
       </ul>
       </div>
       <button
