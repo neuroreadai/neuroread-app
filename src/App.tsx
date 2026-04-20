@@ -21,7 +21,9 @@ export default function App() {
         <h1> Welcome to NeuroRead Early
           Access 🎉 </h1> 
           
-      <p style={{ fontSize: "18px", marginTop: "16px" }}>
+      <p style={{ fontWeight: "bold",
+      marginTop: "10px", color:
+        "#2e7d32" }}>
       ✅ Your early access spot is confirmed. 
       </p>
       <p style={{ marginTop: "12px", lineHeight: "1.7" }}>
