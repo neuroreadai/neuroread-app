@@ -241,11 +241,11 @@ fontWeight: "bold" }}>
          > 
           Unlock Full Access
          </button>
+           }
           
-)}
+           
 </div>
 </div>    
-) : ( 
 <div       
           style={{
               marginTop: "24px", 
