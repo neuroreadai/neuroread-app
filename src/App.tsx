@@ -246,15 +246,6 @@ fontWeight: "bold" }}>
     </button>
   )}
 </div>    
-            style={{ marginTop: "20px",
-              padding: "10px 18px",
-          backgroundColor: "#111827",
-                    color: "white",
-          border: "none",
-          borderRadius: "8px",
-          cursor: "pointer", 
-          fontWeight: "bold" }}
-            >
             
           ) : (
           <div
