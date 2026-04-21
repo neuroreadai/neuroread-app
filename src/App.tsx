@@ -246,7 +246,7 @@ fontWeight: "bold" }}>
         padding: "20px",
         border: "2px solid #7C3AED",
         borderRadius: "12px", 
-        backgroundColor: "faf5ff",
+        backgroundColor: "#faf5ff",
         textAlign: "center" 
        }}
           >
