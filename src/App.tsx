@@ -313,7 +313,6 @@ fontWeight: "bold" }}>
           Start Early Access - $29
           </a>
         </div>
-      )}
 
           <button
             onClick={() => {setStarted(false);
