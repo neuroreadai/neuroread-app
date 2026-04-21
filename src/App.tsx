@@ -221,8 +221,8 @@ fontWeight: "bold" }}>
       </button>
 
       {selectedAnswer === "confidence" && (
-        <div>
-          style={{ marginTop: "16px" }}>
+        
+         <div  style={{ marginTop: "16px" }}>
           <p style={{ color: "green",
         fontWeight: "bold" }}>Correct!</p>
           <button
