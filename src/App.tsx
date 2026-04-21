@@ -226,7 +226,7 @@ fontWeight: "bold" }}>
         fontWeight: "bold" }}>Correct!</p>
           <button
           onclick={ () =>
-        setShowPaywall(true))}
+        setShowPaywall(true)}
           style={{
             marginTop: "8px",
             padding: "10px 18px",
