@@ -245,6 +245,7 @@ fontWeight: "bold" }}>
 )}
 </div>
 </div>    
+) : ( 
 <div       
           style={{
               marginTop: "24px", 
@@ -252,7 +253,8 @@ fontWeight: "bold" }}>
         border: "2px solid #7C3AED",
         borderRadius: "12px", 
         backgroundColor: "faf5ff",
-         textAlign: "center" }}
+        textAlign: "center" 
+       }}
           >
           <h2> Unlock Full NeuroRead</h2>
            <p> Unlock personalized AI reading support built to help neurodiverse learners improve confidence, focus, and comprehension.
