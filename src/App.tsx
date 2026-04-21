@@ -221,31 +221,25 @@ fontWeight: "bold" }}>
       </button>
 
       {selectedAnswer === "confidence" && (
-        
-         <div  style={{ marginTop: "16px" }}>
-          <p style={{ color: "green",
-        fontWeight: "bold" }}>Correct!</p>
-          <button
-          onclick={ () =>
-        setShowPaywall(true)}
-          style={{
-            marginTop: "8px",
-            padding: "10px 18px",
-            backgroundColor: "#7C3AED",
-            color: "white",
-            border: "none",
-            borderRadius: "8px",
-            cursor: "pointer",
-            fontWeight: "bold"
-          }}
-         > 
-          Unlock Full Access
-         </button>
-           }
-          
-           
-</div>
-</div>    
+  <div style={{ marginTop: "16px" }}>
+    <p style={{ color: "green", fontWeight: "bold" }}>Correct!</p>
+    <button
+      onClick={() => setShowPaywall(true)}
+      style={{
+        marginTop: "8px",
+        padding: "10px 18px",
+        backgroundColor: "#7C3AED",
+        color: "white",
+        border: "none",
+        borderRadius: "8px",
+        cursor: "pointer",
+        fontWeight: "bold"
+      }}
+    >
+      Unlock Full Access
+    </button>
+  </div>
+)} 
 <div       
           style={{
               marginTop: "24px", 
