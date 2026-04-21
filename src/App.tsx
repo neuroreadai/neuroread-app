@@ -221,34 +221,29 @@ fontWeight: "bold" }}>
       </button>
 
       {selectedAnswer === "confidence" && (
-        <p style={{ color: "green" }}>Correct!</p>
+        <div style={{ marginTop: "16px" }}>
+          <p style={{ color: "green",
+        fontWeight: "bold" }}>Correct!</p>
+          <button
+            onClick={() =>
+        setShowPaywall(true)}
+            style={{
+              marginTop: "8px",
+              padding: "10px 18px",
+              backgroundColor: "#7C3AED",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontWeight: "bold"
       )}
-      </>
+      >
   )}
 </div>
-
-<div style={{ marginTop: "20px" }}>
-  {readingStep > 1 && (
-    <button onClick={() => setReadingStep(readingStep - 1)}>
-      Back
-    </button>
-  )}
-
-  {readingStep < 3 && (
-    <button onClick={() => setReadingStep(readingStep + 1)}>
-      Continue →
-    </button>
-  )}
-
-  {readingStep === 3 && selectedAnswer === "confidence" && (
-    <button onClick={() => setShowPaywall(true)}>
-      Unlock Full Access
-    </button>
-  )}
 </div>    
+) : (
+      <div 
             
-          ) : (
-          <div
             style={{
               marginTop: "24px", padding: "20px", border: "2px solid #7C3AED", borderRadius: "12px", backgroundColor: "faf5ff",
                 textAlign: "center" }}
