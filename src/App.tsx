@@ -20,6 +20,11 @@ export default function App() {
   const [showPaywall,
   setShowPaywall]=
   useState(false);
+  const [readingStep,
+  setReadingStep] = useState(1);
+  const [selectedAnswer,
+  setSelectedAnswer] =
+  useState("");
     
   return (
     <div style={{ fontFamily: "Arial", padding: "40px" }}>
@@ -168,9 +173,79 @@ fontWeight: "bold" }}>
             learners hear words, understand vocabulary, and build confidence one
             sentence at a time.
           </div>
-          {!showPaywall ? (
-          <button onClick={ () =>
-            setShowPaywall(true)}
+          <p style={{ fontWeight: "bold", color: "#7C3AED" }}>
+            Lesson Progress: Step {readingStep} of 3
+          </p>
+
+          <div
+          style={{
+          marginTop: "20px",
+          padding: "20px",
+          border: "1px solid #ddd",
+          borderRadius: "10px",
+          backgroundColor: "#f9f9f9",
+          lineHeight: "1.7"
+  }}
+>
+      {readingStep === 1 && (
+        <>
+          <h3>Step 1: Read</h3>
+          <p>The quick brown fox jumps over the lazy dog.</p>
+        </>
+  )}
+        {readingStep === 2 && (
+        <>
+      <h3>Step 2: Read More</h3>
+      <p>
+        Reading tools can help learners hear words, understand vocabulary, and
+        build confidence one sentence at a time.
+      </p>
+    </>
+  )}
+
+  {readingStep === 3 && (
+      <>
+      <h3>Step 3: Quick Check</h3>
+      <p>What can reading tools help learners build?</p>
+
+      <button onClick={() => setSelectedAnswer("confidence")}>
+        Confidence
+      </button>
+
+      <button onClick={() => setSelectedAnswer("confusion")}>
+        Confusion
+      </button>
+
+      <button onClick={() => setSelectedAnswer("silence")}>
+        Silence
+      </button>
+
+      {selectedAnswer === "confidence" && (
+        <p style={{ color: "green" }}>Correct!</p>
+      )}
+      </>
+  )}
+</div>
+
+<div style={{ marginTop: "20px" }}>
+  {readingStep > 1 && (
+    <button onClick={() => setReadingStep(readingStep - 1)}>
+      Back
+    </button>
+  )}
+
+  {readingStep < 3 && (
+    <button onClick={() => setReadingStep(readingStep + 1)}>
+      Continue →
+    </button>
+  )}
+
+  {readingStep === 3 && selectedAnswer === "confidence" && (
+    <button onClick={() => setShowPaywall(true)}>
+      Unlock Full Access
+    </button>
+  )}
+</div>    
             style={{ marginTop: "20px",
               padding: "10px 18px",
           backgroundColor: "#111827",
@@ -180,8 +255,7 @@ fontWeight: "bold" }}>
           cursor: "pointer", 
           fontWeight: "bold" }}
             >
-            Continue Reading &rarr;
-          </button>
+            
           ) : (
           <div
             style={{
