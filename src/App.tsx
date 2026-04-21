@@ -242,7 +242,7 @@ fontWeight: "bold" }}>
           Unlock Full Access
          </button>
           
-  )}
+)}
 </div>
 </div>    
 <div       
