@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 
 export default function App() {
@@ -221,103 +222,95 @@ fontWeight: "bold" }}>
       </button>
 
       {selectedAnswer === "confidence" && (
-  <div style={{ marginTop: "16px" }}>
-    <p style={{ color: "green", fontWeight: "bold" }}>Correct!</p>
-    <button
-      onClick={() => setShowPaywall(true)}
-      style={{
-        marginTop: "8px",
-        padding: "10px 18px",
-        backgroundColor: "#7C3AED",
-        color: "white",
-        border: "none",
-        borderRadius: "8px",
-        cursor: "pointer",
-        fontWeight: "bold"
-      }}
-    >
-      Unlock Full Access
-    </button>
-  </div>
-)} 
-<div       
-          style={{
-              marginTop: "24px", 
-        padding: "20px",
-        border: "2px solid #7C3AED",
-        borderRadius: "12px", 
-        backgroundColor: "#faf5ff",
-        textAlign: "center" 
-       }}
-          >
-          <h2> Unlock Full NeuroRead</h2>
-           <p> Unlock personalized AI reading support built to help neurodiverse learners improve confidence, focus, and comprehension.
-           </p>
-          <ul style={{
-            listStyle: "none",
-            padding: 0,
-            marginTop: "16px",
-            textAlign: "left",
-            display: "inline-block"
-          }}
-          >
-            <li style={{ marginBottom: "8px" }}>
-              <span style={{ color: "22c55e", marginRight: "8px" }}
-            >
-             {"\u2713"}
-            </span>
-             Personalized AI reading support
-            </li>
-            <li style={{ marginBottom: "8px" }} >
-            <span style={{ color: "#22c55e", marginRight: "8px" }}
-              >
-              {"\u2713"}
-            </span>
-             Built for neurodiverse learners
-              </li>
-            <li>
-            <span style={{ color: "#22c55e", marginRight: "8px" }}
-              >
-              {"\u2713"}
-            </span>
-              Improve focus, comprehension,  and confidence
-            </li>
-          </ul> 
-            
-          <a
-            href="https://buy.stripe.com/4gM9AUd2bdvpd0q17y4c800"
-            target="_blank" 
-            rel="noopener noreferrer"
-            style={{ display: "inline-block",
-                    padding: "12px 20px",
-                    backgroundColor: "#7C3AED",
-                    color: "white", 
-                    borderRadius: "8px",
-                    textDecoration: "none",
-                    fontWeight: "bold", 
-                    marginTop: "10px"
-                   }}
-          >
-          Start Early Access - $29
-          </a>
-        </div>
+        <div style={{ marginTop: "16px" }}>
+          <p style={{ color: "green", fontWeight: "bold" }}>Correct!</p>
 
           <button
-            onClick={() => {setStarted(false);
-            setShowPaywall(false);}}
+            onClick={() => setShowPaywall(true)}
             style={{
-              padding: "10px 16px",
-              marginTop: "20px",
-              backgroundColor: "#666",
+              marginTop: "8px",
+              padding: "10px 18px",
+              backgroundColor: "#7C3AED",
               color: "white",
               border: "none",
               borderRadius: "8px",
-              cursor: "pointer"
+              cursor: "pointer",
+              fontWeight: "bold"
             }}
           >
-            Back
+            Unlock Full Access
           </button>
         </div>
+      )}
+
+      {showPaywall && (
+        <div
+          style={{
+            marginTop: "24px",
+            padding: "20px",
+            border: "2px solid #7C3AED",
+            borderRadius: "12px",
+            backgroundColor: "#faf5ff",
+            textAlign: "center"
+          }}
+        >
+          h2>Unlock Full NeuroRead</h2>
+          <p>
+            Unlock personalized AI reading support built to help neurodiverse
+            learners grow confidence, focus, and comprehension.
+          </p>
+
+          <ul
+            style={{
+              listStyle: "none",
+              padding: 0,
+              marginTop: "16px",
+              textAlign: "left",
+              display: "inline-block"
+            }}
+          >
+            <li style={{ marginBottom: "8px" }}>✓ Personalized AI reading support</li>
+            <li style={{ marginBottom: "8px" }}>✓ Confidence-building reading practice</li>
+            <li style={{ marginBottom: "8px" }}>✓ Focus and comprehension tools</li>
+          </ul>
+
+          <div>
+            <button
+              style={{
+                marginTop: "20px",
+                padding: "12px 24px",
+                backgroundColor: "#7C3AED",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                fontWeight: "bold",
+                cursor: "pointer"
+              }}
+            >
+              Upgrade Now
+            </button>
+
+            <button
+              onClick={() => {
+                setStarted(false);
+                setShowPaywall(false);
+              }}
+              style={{
+                padding: "10px 16px",
+                marginTop: "20px",
+                marginLeft: "12px",
+                backgroundColor: "#666",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                cursor: "pointer"
+              }}
+            >
+              Back
+            </button>
+          </div>
+        </div>
+      )}
     </div>
     );
 }
