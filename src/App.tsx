@@ -154,7 +154,7 @@ fontWeight: "bold" }}>
    Limited early access spots available
 </p>
 </div>
-      
+ ) : (     
         <div style={{ maxWidth: "700px", margin: "0 auto" }}>
           <h1>Reading Practice</h1>
           <p>
@@ -310,8 +310,8 @@ fontWeight: "bold" }}>
             </button>
           </div>
         </div>
+        </>
 )}
-</>
 );
 }
 export default App; 
