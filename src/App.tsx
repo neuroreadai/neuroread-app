@@ -142,7 +142,7 @@ export default function App() {
   }}
   >
   Start Early Access - $29
-</a>
+  </a>
 <ul style={{ marginTop: "10px",fontSize:"14px", lineHeight:"1.6", listStyle: "none", padding: 0 }}>
 <li> ✔ Personalized AI reading support</li>
 <li> ✔ Built for neurodiverse learners</li>
