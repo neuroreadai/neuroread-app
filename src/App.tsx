@@ -241,7 +241,7 @@ fontWeight: "bold" }}>
             Unlock Full Access
           </button>
         </div>
-      )}
+        )}
 
       {showPaywall && (
         <div
