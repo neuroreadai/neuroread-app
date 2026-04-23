@@ -93,7 +93,7 @@ export default function App() {
         cursor: "pointer",
         fontWeight: "bold"
       }}
-     >
+       >
         Start Your Reading Journey 
           </button>
         <p style={{ fontSize: "13px",
@@ -120,7 +120,7 @@ export default function App() {
       cursor: "pointer",
       marginTop: "20px"
     }}
-  >
+    >
     Start Reading
   </button>
 
@@ -140,7 +140,7 @@ export default function App() {
     marginTop: "12px",
     fontWeight: "bold"
   }}
->
+  >
   Start Early Access - $29
 </a>
 <ul style={{ marginTop: "10px",fontSize:"14px", lineHeight:"1.6", listStyle: "none", padding: 0 }}>
@@ -187,7 +187,7 @@ fontWeight: "bold" }}>
           backgroundColor: "#f9f9f9",
           lineHeight: "1.7"
   }}
->
+  >
       {readingStep === 1 && (
         <>
           <h3>Step 1: Read</h3>
@@ -311,7 +311,7 @@ fontWeight: "bold" }}>
           </div>
         </div>
         )}
-< / >
+      </> 
 );
 }
 export default App; 
