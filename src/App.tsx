@@ -254,7 +254,7 @@ fontWeight: "bold" }}>
             textAlign: "center"
           }}
         >
-          h2>Unlock Full NeuroRead</h2>
+          <h2>Unlock Full NeuroRead</h2>
           <p>
             Unlock personalized AI reading support built to help neurodiverse
             learners grow confidence, focus, and comprehension.
