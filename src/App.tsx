@@ -312,8 +312,8 @@ fontWeight: "bold" }}>
         </div>
 )}
     </div>
-  }
-  );
+  } 
+);
 }
 export default App;
   
