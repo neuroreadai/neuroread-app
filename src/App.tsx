@@ -310,9 +310,9 @@ fontWeight: "bold" }}>
             </button>
           </div>
         </div>
-      )}
+)}
     </div>
-    );
+  );
 }
 export default App;
   
