@@ -220,15 +220,15 @@ export default function App() {
         border: "none",
         borderRadius: "8px",
         cursor: "pointer",
-      }}
-    >
+      }} >
+    
       Back
     </button>
   </div>
-)}
-      </div>
+  )}
+   </div>
     )}
-  </div>
+    </div>
 );
 }
   
