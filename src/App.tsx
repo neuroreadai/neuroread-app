@@ -96,8 +96,9 @@ export default function App() {
           Start Early Access - $29
         </a>
       </div>
-
-      <div style={{ maxWidth: "700px",
+) : (
+      <div 
+        style={{ maxWidth: "700px",
                    margin: "0 auto" }}>
         <h1>Reading Practice</h1>
 
