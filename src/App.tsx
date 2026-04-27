@@ -97,7 +97,6 @@ export default function App() {
         </a>
       </div>
 
-    ) : (
       <div style={{ maxWidth: "700px",
                    margin: "0 auto" }}>
         <h1>Reading Practice</h1>
@@ -167,6 +166,19 @@ export default function App() {
             )}
           </div>
         )}
+        <div style={{ marginTop: "20px" }}>
+    {readingStep > 1 && (
+    <button onClick={() => setReadingStep(readingStep - 1)}>
+      Back
+    </button>
+  )}
+
+  {readingStep < 3 && (
+    <button onClick={() => setReadingStep(readingStep + 1)}>
+      Continue →
+    </button>
+  )}
+</div>
 
         {showPaywall && (
           <div style={{ marginTop: "24px",
