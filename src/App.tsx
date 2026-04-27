@@ -181,52 +181,51 @@ export default function App() {
   )}
 </div>
 
-        {showPaywall && (
-          <div style={{ marginTop: "24px",
-                       textAlign: "center" }}>
-            <h2>Unlock Full NeuroRead</h2>
-            
-            <p>
-              Personalized AI reading support built to help learners grow confidence.
-            </p>
+  {showPaywall && (
+  <div style={{ marginTop: "24px", textAlign: "center" }}>
+    <h2>Unlock Full NeuroRead</h2>
 
-            <a
-              href="https://buy.stripe.com/4gM9AUd2bdvpd0q17y4c800"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                display: "inline-block",
-                padding: "12px 24px",
-                backgroundColor: "#7C3AED",
-                color: "white",
-                borderRadius: "8px",
-                textDecoration: "none",
-                marginTop: "16px"
-              }}
-            >
-              Upgrade Now - $29
-            </a>
+    <p>
+      Personalized AI reading support built to help learners grow confidence.
+    </p>
 
-            <br /><br />
+    <a
+      href="https://buy.stripe.com/4gM9AUd2bdvpd0q17y4c800"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{
+        display: "inline-block",
+        padding: "12px 24px",
+        backgroundColor: "#7C3AED",
+        color: "white",
+        borderRadius: "8px",
+        textDecoration: "none",
+        marginTop: "16px",
+      }}
+    >
+      Upgrade Now - $29
+    </a>
 
-            <button
-              onClick={() => {
-                setStarted(false);
-                setShowPaywall(false);
-              }}
-              style={{
-                padding: "10px 16px",
-                backgroundColor: "#666",
-                color: "white",
-                border: "none",
-                borderRadius: "8px",
-                cursor: "pointer"
-              }}
-            >
-              Back
-            </button>
-          </div>
-        )}
+    <br />
+    <br />
+    button
+      onClick={() => {
+        setStarted(false);
+        setShowPaywall(false);
+      }}
+      style={{
+        padding: "10px 16px",
+        backgroundColor: "#666",
+        color: "white",
+        border: "none",
+        borderRadius: "8px",
+        cursor: "pointer",
+      }}
+    >
+      Back
+    </button>
+  </div>
+)}
       </div>
     )}
   </div>
