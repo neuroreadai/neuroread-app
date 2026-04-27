@@ -111,7 +111,7 @@ export default function App() {
 
         {readingStep === 1 && (
           <div>
-          h3>Step 1: Read</h3>
+          <h3>Step 1: Read</h3>
             <p>The quick brown fox jumps over the lazy dog.</p>
           </div>
         )}
