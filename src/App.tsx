@@ -189,10 +189,10 @@ fontWeight: "bold" }}>
   }}
   >
       {readingStep === 1 && (
-        <>
+    <div>
           <h3>Step 1: Read</h3>
           <p>The quick brown fox jumps over the lazy dog.</p>
-        </>
+    </div>
   )}
         {readingStep === 2 && (
         <>
@@ -315,5 +315,5 @@ fontWeight: "bold" }}>
       
 );
 }
-export default App; 
+
   
