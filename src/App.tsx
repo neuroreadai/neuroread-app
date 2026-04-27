@@ -208,7 +208,7 @@ export default function App() {
 
     <br />
     <br />
-    button
+    <button
       onClick={() => {
         setStarted(false);
         setShowPaywall(false);
@@ -220,7 +220,8 @@ export default function App() {
         border: "none",
         borderRadius: "8px",
         cursor: "pointer",
-      }} >
+      }}
+      >
     
       Back
     </button>
