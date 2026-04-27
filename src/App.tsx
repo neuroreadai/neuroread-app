@@ -269,9 +269,9 @@ fontWeight: "bold" }}>
               display: "inline-block"
             }}
           >
-            <li style={{ marginBottom: "8px" }}>✓ Personalized AI reading support</li>
-            <li style={{ marginBottom: "8px" }}>✓ Confidence-building reading practice</li>
-            <li style={{ marginBottom: "8px" }}>✓ Focus and comprehension tools</li>
+            <li style={{ marginBottom: "8px" }}>Personalized AI reading support</li>
+            <li style={{ marginBottom: "8px" }}>Confidence-building reading practice</li>
+            <li style={{ marginBottom: "8px" }}>Focus and comprehension tools</li>
           </ul>
 
           <div>
@@ -310,7 +310,7 @@ fontWeight: "bold" }}>
             </button>
           </div>
         
-        )}
+              )}
       
 );
 }
