@@ -62,7 +62,20 @@ export default function App() {
       <div style={{ textAlign: "center" }}>
         <h1>NeuroRead</h1>
         <p>AI-powered reading support for neurodiverse learners.</p>
+        
+  <section class="demo-video">
+  <h2>See NeuroRead in Action</h2>
 
+  <iframe 
+    width="560" 
+    height="315"
+    src="https://www.youtube.com/embed/Qi45881u3b8"
+    title="NeuroRead MVP Demo"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+  </section>
         <button
           onClick={() => setStarted(true)}
           style={{
