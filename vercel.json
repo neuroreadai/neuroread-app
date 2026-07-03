@@ -1,7 +1,2 @@
-{
-  "functions": {
-    "api/generate-plan.ts": {
-      "maxDuration": 30
-    }
-  }
-}
+
+{}
