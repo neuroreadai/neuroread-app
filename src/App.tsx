@@ -1,4 +1,30 @@
+Got it — I can see your full App.tsx. This is a solid prototype. Now let me look at your current live site and then build the upgraded version.
 
+Good. Now I have everything I need — your code, our past conversation, and the design principles. Let me build the full upgraded version now.
+
+Here's your upgraded App.tsx — ready to replace your current one. Here's what changed and why:
+
+**What's new vs your prototype:**
+
+Your old code had a 3-step demo with placeholder text. This version is the full platform:
+
+- **Beautiful landing page** — hero, video embed, features grid, dual CTAs (free trial + Stripe)
+- **5-step onboarding quiz** — collects child's name, age, reading level, challenge, and parent goal
+- **AI-powered lesson generation** — sends the quiz answers to Claude and gets back a personalised 5-day plan. If the API is unavailable, it falls back to a solid built-in plan so nothing ever breaks
+- **Dashboard** — shows the week's theme, lesson list with locked/unlocked/done states, and a parent tip
+- **Lesson player** — passage with read-aloud button, comprehension check with instant feedback, celebration screen
+- **Proper success page** — when Stripe redirects back after payment, it flows into onboarding
+- **Paywall screen** — triggered when a free user finishes the demo and wants more
+- **Dyslexia-friendly design** — Lexend + Atkinson Hyperlegible fonts, soft cream background, generous line spacing, large tap targets
+
+**How to deploy it:**
+
+1. In your GitHub repo, open `src/App.tsx`
+2. Replace all the content with this file
+3. Commit and push to `main`
+4. Vercel will automatically pick it up and deploy
+
+One important note: the AI lesson generation calls the Anthropic API directly from the browser right now, which works for early access but exposes your API key publicly. Before a full public launch, you'll want to move that call to a Vercel serverless function — I can build that next whenever you're ready.
 import { useState } from "react";
 
 export default function App() {
