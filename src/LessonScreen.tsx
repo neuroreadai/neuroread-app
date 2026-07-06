@@ -1,6 +1,4 @@
 // ─── LessonScreen.tsx ────────────────────────────────────────────────────────
-// Drop this file into src/LessonScreen.tsx
-
 import { useState, useEffect, useRef, useCallback } from "react";
 
 interface Lesson {
@@ -100,11 +98,15 @@ function useTTS(words: string[]) {
         if (boundaryWorking) return;
         if (idx >= words.length) { setActiveIdx(null); return; }
         setActiveIdx(idx);
-        const duration = 400 + (words[idx].length * 50);
+        // At rate 0.8, ~110 words/min = ~545ms per average word
+        // Scale by word length for better accuracy
+        const wordLen = Math.max(2, words[idx].replace(/[^a-zA-Z]/g, "").length);
+        const duration = 500 + (wordLen * 45);
         idx++;
         timerRef.current = setTimeout(advance, duration);
       }
-      timerRef.current = setTimeout(advance, 100);
+      // Wait 400ms for TTS engine to spin up on mobile
+      timerRef.current = setTimeout(advance, 400);
     };
 
     utter.onend = () => {
