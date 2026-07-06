@@ -1,6 +1,5 @@
 // ─── LessonScreen.tsx ────────────────────────────────────────────────────────
 // Drop this file into src/LessonScreen.tsx
-// Then in App.tsx add at the top: import LessonScreen from "./LessonScreen";
 
 import { useState, useEffect, useRef, useCallback } from "react";
 
@@ -67,27 +66,59 @@ function useTTS(words: string[]) {
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const [speaking, setSpeaking] = useState(false);
   const utterRef = useRef<SpeechSynthesisUtterance | null>(null);
+  const timerRef = useRef<any>(null);
 
   const speak = useCallback(() => {
     if (!("speechSynthesis" in window)) return;
     window.speechSynthesis.cancel();
+    if (timerRef.current) clearTimeout(timerRef.current);
+
     const text = words.join(" ");
     const utter = new SpeechSynthesisUtterance(text);
     utter.rate = 0.8;
     utter.pitch = 1.05;
-    let charIndex = 0;
-    const wordStarts: number[] = [];
-    words.forEach((w) => { wordStarts.push(charIndex); charIndex += w.length + 1; });
+
+    let boundaryWorking = false;
+
     utter.onboundary = (e) => {
       if (e.name !== "word") return;
-      const idx = wordStarts.findIndex((start, i) =>
-        e.charIndex >= start && (i === wordStarts.length - 1 || e.charIndex < wordStarts[i + 1])
-      );
-      if (idx !== -1) setActiveIdx(idx);
+      boundaryWorking = true;
+      let charCount = 0;
+      for (let i = 0; i < words.length; i++) {
+        if (e.charIndex >= charCount && e.charIndex < charCount + words[i].length) {
+          setActiveIdx(i);
+          break;
+        }
+        charCount += words[i].length + 1;
+      }
     };
-    utter.onstart = () => setSpeaking(true);
-    utter.onend = () => { setSpeaking(false); setActiveIdx(null); };
-    utter.onerror = () => { setSpeaking(false); setActiveIdx(null); };
+
+    utter.onstart = () => {
+      setSpeaking(true);
+      let idx = 0;
+      function advance() {
+        if (boundaryWorking) return;
+        if (idx >= words.length) { setActiveIdx(null); return; }
+        setActiveIdx(idx);
+        const duration = 400 + (words[idx].length * 50);
+        idx++;
+        timerRef.current = setTimeout(advance, duration);
+      }
+      timerRef.current = setTimeout(advance, 100);
+    };
+
+    utter.onend = () => {
+      setSpeaking(false);
+      setActiveIdx(null);
+      if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; }
+    };
+
+    utter.onerror = () => {
+      setSpeaking(false);
+      setActiveIdx(null);
+      if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; }
+    };
+
     utterRef.current = utter;
     window.speechSynthesis.speak(utter);
   }, [words]);
@@ -96,9 +127,14 @@ function useTTS(words: string[]) {
     window.speechSynthesis.cancel();
     setSpeaking(false);
     setActiveIdx(null);
+    if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; }
   }, []);
 
-  useEffect(() => () => { window.speechSynthesis.cancel(); }, []);
+  useEffect(() => () => {
+    window.speechSynthesis.cancel();
+    if (timerRef.current) clearTimeout(timerRef.current);
+  }, []);
+
   return { activeIdx, speaking, speak, stop };
 }
 
