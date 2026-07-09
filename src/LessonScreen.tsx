@@ -101,7 +101,7 @@ function useTTS(words: string[]) {
         // At rate 0.8, ~110 words/min = ~545ms per average word
         // Scale by word length for better accuracy
         const wordLen = Math.max(2, words[idx].replace(/[^a-zA-Z]/g, "").length);
-        const duration = 300+ (wordLen * 25);
+        const duration = 240+ (wordLen * 25);
         idx++;
         timerRef.current = setTimeout(advance, duration);
       }
