@@ -101,12 +101,12 @@ function useTTS(words: string[]) {
         // At rate 0.8, ~110 words/min = ~545ms per average word
         // Scale by word length for better accuracy
         const wordLen = Math.max(2, words[idx].replace(/[^a-zA-Z]/g, "").length);
-        const duration = 500 + (wordLen * 45);
+        const duration = 420+ (wordLen * 40);
         idx++;
         timerRef.current = setTimeout(advance, duration);
       }
       // Wait 400ms for TTS engine to spin up on mobile
-      timerRef.current = setTimeout(advance, 400);
+      timerRef.current = setTimeout(advance, 50);
     };
 
     utter.onend = () => {
