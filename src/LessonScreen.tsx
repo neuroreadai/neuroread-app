@@ -73,7 +73,7 @@ function useTTS(words: string[]) {
 
     const text = words.join(" ");
     const utter = new SpeechSynthesisUtterance(text);
-    utter.rate = 0.65;
+    utter.rate = 0.8;
     utter.pitch = 1.05;
 
     let boundaryWorking = false;
