@@ -73,7 +73,7 @@ function useTTS(words: string[]) {
 
     const text = words.join(" ");
     const utter = new SpeechSynthesisUtterance(text);
-    utter.rate = 0.65;
+    utter.rate = 0.75;
     utter.pitch = 1.05;
 
     let boundaryWorking = false;
@@ -101,7 +101,7 @@ function useTTS(words: string[]) {
         // At rate 0.8, ~110 words/min = ~545ms per average word
         // Scale by word length for better accuracy
         const wordLen = Math.max(2, words[idx].replace(/[^a-zA-Z]/g, "").length);
-        const duration = 240+ (wordLen * 18);
+        const duration = 320+ (wordLen * 22);
         idx++;
         timerRef.current = setTimeout(advance, duration);
       }
