@@ -1,4 +1,4 @@
- import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import LessonScreen from "./LessonScreen";
 
 type Screen =
@@ -8,7 +8,8 @@ type Screen =
   | "dashboard"
   | "lesson"
   | "success"
-  | "paywall";
+  | "paywall"
+  | "pricing";
 
 interface ChildProfile {
   name: string;
@@ -38,14 +39,6 @@ const STRIPE_URL = "https://buy.stripe.com/4gM9AUd2bdvpd0q17y4c800";
 function getParam(key: string) {
   if (typeof window === "undefined") return null;
   return new URLSearchParams(window.location.search).get(key);
-}
-
-function speak(text: string) {
-  if (!("speechSynthesis" in window)) return;
-  window.speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  u.rate = 0.85;
-  window.speechSynthesis.speak(u);
 }
 
 const colors = {
@@ -86,7 +79,7 @@ const globalStyle = `
   .pulse { animation: pulse 1.5s ease infinite; }
 `;
 
-function NavBar({ onBack, label }: { onBack?: () => void; label?: string }) {
+function NavBar({ onBack, label, onPricing }: { onBack?: () => void; label?: string; onPricing?: () => void }) {
   return (
     <nav style={{ background: colors.white, borderBottom: `2px solid ${colors.purpleLight}`, padding: "14px 24px", display: "flex", alignItems: "center", gap: "12px", position: "sticky", top: 0, zIndex: 10 }}>
       {onBack && <button onClick={onBack} aria-label="Go back" style={{ background: colors.purpleLight, border: "none", borderRadius: "8px", padding: "6px 12px", color: colors.purple, fontWeight: 700, fontSize: "15px" }}>← Back</button>}
@@ -94,6 +87,11 @@ function NavBar({ onBack, label }: { onBack?: () => void; label?: string }) {
         Neuro<span style={{ color: colors.orange }}>Read</span>
       </span>
       {label && <span style={{ color: colors.gray500, fontSize: "14px" }}>— {label}</span>}
+      {onPricing && (
+        <button onClick={onPricing} style={{ marginLeft: "auto", background: "none", border: "none", color: colors.purple, fontWeight: 700, fontSize: "15px", cursor: "pointer", fontFamily: font.body }}>
+          Pricing
+        </button>
+      )}
     </nav>
   );
 }
@@ -120,7 +118,7 @@ function ProgressBar({ current, total }: { current: number; total: number }) {
   );
 }
 
-function LandingScreen({ onStart, onPay }: { onStart: () => void; onPay: () => void }) {
+function LandingScreen({ onStart, onPay, onPricing }: { onStart: () => void; onPay: () => void; onPricing: () => void }) {
   const features = [
     { icon: "🧠", title: "AI Lesson Plans", desc: "Every plan is built for your child's exact reading level and challenges." },
     { icon: "🔊", title: "Read Aloud Support", desc: "Any word or passage can be spoken aloud at the tap of a button." },
@@ -131,7 +129,7 @@ function LandingScreen({ onStart, onPay }: { onStart: () => void; onPay: () => v
   ];
   return (
     <div>
-      <NavBar />
+      <NavBar onPricing={onPricing} />
       <div className="fade-in" style={{ background: `linear-gradient(135deg, ${colors.purpleDark} 0%, ${colors.purple} 60%, #7C3AED 100%)`, color: colors.white, padding: "72px 24px 80px", textAlign: "center" }}>
         <p style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.8, marginBottom: "16px" }}>AI-Powered Reading Support</p>
         <h1 style={{ fontFamily: font.display, fontSize: "clamp(36px, 6vw, 60px)", fontWeight: 800, maxWidth: "680px", margin: "0 auto 20px" }}>
@@ -146,8 +144,6 @@ function LandingScreen({ onStart, onPay }: { onStart: () => void; onPay: () => v
         </div>
         <p style={{ marginTop: "20px", fontSize: "14px", opacity: 0.7 }}>No commitment. Cancel anytime. Price locked for early members.</p>
       </div>
-
-    
 
       <div style={{ padding: "64px 24px", maxWidth: "960px", margin: "0 auto" }}>
         <h2 style={{ fontFamily: font.display, fontSize: "32px", textAlign: "center", marginBottom: "40px" }}>Everything your child needs to grow</h2>
@@ -168,6 +164,7 @@ function LandingScreen({ onStart, onPay }: { onStart: () => void; onPay: () => v
         <div style={{ display: "flex", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
           <PrimaryBtn onClick={onStart}>Try a Free Lesson</PrimaryBtn>
           <PrimaryBtn href={STRIPE_URL} style={{ background: colors.orange }}>Get Early Access — $29</PrimaryBtn>
+          <PrimaryBtn onClick={onPricing} style={{ background: colors.white, color: colors.purple, boxShadow: "none", border: `2px solid ${colors.purple}` }}>View All Plans</PrimaryBtn>
         </div>
       </div>
 
@@ -319,18 +316,202 @@ function PaywallScreen({ onBack }: { onBack: () => void }) {
       <div className="fade-in" style={{ maxWidth: "560px", margin: "0 auto", padding: "80px 24px", textAlign: "center" }}>
         <div style={{ fontSize: "52px", marginBottom: "16px" }}>🔓</div>
         <h1 style={{ fontFamily: font.display, fontSize: "32px", marginBottom: "12px" }}>Unlock full access</h1>
-        <p style={{ color: colors.gray700, fontSize: "18px", marginBottom: "32px", lineHeight: 1.7 }}>You've just seen what NeuroRead can do. Unlock personalised weekly lesson plans, mic reading, hesitation detection, and unlimited sessions — built around your child.</p>
+        <p style={{ color: colors.gray700, fontSize: "18px", marginBottom: "32px", lineHeight: 1.7 }}>Unlock personalised weekly lesson plans, mic reading, hesitation detection, and unlimited sessions — built around your child.</p>
         <Card style={{ marginBottom: "24px", border: `2px solid ${colors.purple}` }}>
           <p style={{ fontSize: "13px", fontWeight: 700, color: colors.purple, marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.08em" }}>Early Access</p>
           <p style={{ fontFamily: font.display, fontSize: "48px", fontWeight: 800, color: colors.purpleDark }}>$29<span style={{ fontSize: "18px", color: colors.gray500 }}>/mo</span></p>
           <p style={{ color: colors.gray500, fontSize: "14px", marginBottom: "20px" }}>Price locked for early members — never goes up.</p>
-          {["Personalised AI lesson plan each week", "Dyslexia-friendly reading sessions", "🎤 Microphone reading mode", "🔍 Hesitation detection & word reports", "Comprehension checks & instant feedback", "🔊 Read-aloud with word highlighting", "Progress tracking for parents", "Cancel anytime"].map((f) => (
+          {["Personalised AI lesson plan each week", "Dyslexia-friendly reading sessions", "🎤 Microphone reading mode", "🔍 Hesitation detection & word reports", "🔊 Read-aloud with word highlighting", "Progress tracking for parents", "Cancel anytime"].map((f) => (
             <p key={f} style={{ textAlign: "left", padding: "6px 0", fontSize: "15px", color: colors.gray700, borderBottom: `1px solid ${colors.gray100}` }}>✓ {f}</p>
           ))}
         </Card>
         <PrimaryBtn href={STRIPE_URL} style={{ width: "100%", textAlign: "center" }}>Get Early Access — $29/mo →</PrimaryBtn>
         <p style={{ marginTop: "12px", fontSize: "14px", color: colors.gray500 }}>Secure checkout via Stripe. No commitment.</p>
       </div>
+    </div>
+  );
+}
+
+function PricingScreen({ onBack, onStart }: { onBack: () => void; onStart: () => void }) {
+  const familyPlans = [
+    {
+      name: "Early Access",
+      badge: "⚡ Limited spots",
+      price: "$29",
+      period: "/month",
+      note: "Price locked forever for early members",
+      color: colors.orange,
+      features: ["1 child profile", "AI-generated weekly lesson plan", "Word highlighting & read-aloud", "🎤 Mic reading mode", "🔍 Hesitation detection", "Comprehension checks", "Progress tracking", "Cancel anytime"],
+      cta: "Get Early Access",
+      href: STRIPE_URL,
+      highlight: true,
+    },
+    {
+      name: "Individual Family",
+      badge: "Coming soon",
+      price: "$39",
+      period: "/month",
+      note: "For families joining after early access",
+      color: colors.purple,
+      features: ["1 child profile", "AI-generated weekly lesson plan", "Word highlighting & read-aloud", "🎤 Mic reading mode", "🔍 Hesitation detection", "Comprehension checks", "Progress tracking", "Cancel anytime"],
+      cta: "Coming Soon",
+      href: null,
+      highlight: false,
+    },
+    {
+      name: "Family Plus",
+      badge: "Coming soon",
+      price: "$49",
+      period: "/month",
+      note: "Support up to 3 children",
+      color: colors.green,
+      features: ["Up to 3 child profiles", "Individual AI plans per child", "Word highlighting & read-aloud", "🎤 Mic reading mode", "🔍 Hesitation detection", "Comprehension checks", "Progress tracking per child", "Cancel anytime"],
+      cta: "Coming Soon",
+      href: null,
+      highlight: false,
+    },
+  ];
+
+  const schoolPlans = [
+    {
+      name: "Classroom",
+      price: "$199",
+      period: "/month",
+      annual: "$1,990/year — save 2 months",
+      students: "Up to 30 students",
+      features: ["30 student profiles", "AI lesson plans per student", "Teacher dashboard", "Progress reports", "Word highlighting & mic reading", "Hesitation detection per student", "Email support"],
+    },
+    {
+      name: "School",
+      price: "$499",
+      period: "/month",
+      annual: "$4,990/year — save 2 months",
+      students: "Up to 150 students",
+      features: ["150 student profiles", "AI lesson plans per student", "Admin & teacher dashboards", "School-wide progress reporting", "Word highlighting & mic reading", "Hesitation detection per student", "Priority support", "Onboarding session included"],
+    },
+    {
+      name: "District",
+      price: "Custom",
+      period: "",
+      annual: "Annual billing available",
+      students: "Unlimited students",
+      features: ["Unlimited student profiles", "AI lesson plans per student", "District-wide admin dashboard", "Custom reporting & analytics", "Full feature access", "Dedicated account manager", "Staff training included", "Custom onboarding"],
+    },
+  ];
+
+  return (
+    <div style={{ minHeight: "100vh", background: colors.cream }}>
+      <NavBar onBack={onBack} />
+
+      <div style={{ background: `linear-gradient(135deg, ${colors.purpleDark}, ${colors.purple})`, color: colors.white, padding: "56px 24px", textAlign: "center" }}>
+        <p style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.8, marginBottom: "12px" }}>Simple, transparent pricing</p>
+        <h1 style={{ fontFamily: font.display, fontSize: "clamp(32px, 5vw, 52px)", fontWeight: 800, marginBottom: "16px" }}>Plans for every family and school</h1>
+        <p style={{ fontSize: "18px", opacity: 0.9, maxWidth: "500px", margin: "0 auto" }}>Start free. Upgrade when you're ready. Cancel anytime.</p>
+      </div>
+
+      {/* Family Plans */}
+      <div style={{ maxWidth: "960px", margin: "0 auto", padding: "56px 24px" }}>
+        <h2 style={{ fontFamily: font.display, fontSize: "28px", textAlign: "center", marginBottom: "8px" }}>For Families</h2>
+        <p style={{ color: colors.gray500, textAlign: "center", marginBottom: "40px", fontSize: "16px" }}>Personal reading support built around your child</p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
+          {familyPlans.map((plan) => (
+            <div key={plan.name} style={{ background: colors.white, borderRadius: "20px", padding: "32px", border: `2px solid ${plan.highlight ? plan.color : colors.gray100}`, boxShadow: plan.highlight ? "0 8px 32px rgba(234,88,12,0.15)" : "0 2px 12px rgba(0,0,0,0.07)", position: "relative" }}>
+              {plan.highlight && (
+                <div style={{ position: "absolute", top: "-14px", left: "50%", transform: "translateX(-50%)", background: colors.orange, color: colors.white, padding: "4px 16px", borderRadius: "99px", fontSize: "12px", fontWeight: 700, whiteSpace: "nowrap" }}>
+                  ⚡ Early Access — Limited Spots
+                </div>
+              )}
+              <p style={{ fontSize: "12px", fontWeight: 700, color: plan.color, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "8px" }}>{plan.badge}</p>
+              <h3 style={{ fontFamily: font.display, fontSize: "22px", marginBottom: "8px" }}>{plan.name}</h3>
+              <div style={{ display: "flex", alignItems: "baseline", gap: "4px", marginBottom: "4px" }}>
+                <span style={{ fontFamily: font.display, fontSize: "42px", fontWeight: 800, color: colors.gray900 }}>{plan.price}</span>
+                <span style={{ color: colors.gray500, fontSize: "16px" }}>{plan.period}</span>
+              </div>
+              <p style={{ fontSize: "13px", color: colors.gray500, marginBottom: "24px" }}>{plan.note}</p>
+              <div style={{ borderTop: `1px solid ${colors.gray100}`, paddingTop: "20px", marginBottom: "24px" }}>
+                {plan.features.map((f) => (
+                  <p key={f} style={{ fontSize: "15px", color: colors.gray700, padding: "5px 0", display: "flex", gap: "8px" }}>
+                    <span style={{ color: colors.green, fontWeight: 700 }}>✓</span> {f}
+                  </p>
+                ))}
+              </div>
+              {plan.href ? (
+                <a href={plan.href} target="_blank" rel="noopener noreferrer" style={{ display: "block", textAlign: "center", padding: "14px", background: plan.color, color: colors.white, borderRadius: "12px", fontWeight: 700, fontSize: "16px", textDecoration: "none" }}>
+                  {plan.cta} →
+                </a>
+              ) : (
+                <div style={{ textAlign: "center", padding: "14px", background: colors.gray100, color: colors.gray500, borderRadius: "12px", fontWeight: 700, fontSize: "16px" }}>
+                  {plan.cta}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <div style={{ textAlign: "center", marginTop: "32px" }}>
+          <p style={{ color: colors.gray500, marginBottom: "16px" }}>Not sure yet?</p>
+          <button onClick={onStart} style={{ padding: "14px 32px", background: colors.purpleLight, color: colors.purple, border: `2px solid ${colors.purple}`, borderRadius: "12px", fontWeight: 700, fontSize: "16px", cursor: "pointer", fontFamily: font.body }}>
+            Try a free lesson — no account needed
+          </button>
+        </div>
+      </div>
+
+      {/* School Plans */}
+      <div style={{ background: colors.gray900, padding: "56px 24px" }}>
+        <div style={{ maxWidth: "960px", margin: "0 auto" }}>
+          <h2 style={{ fontFamily: font.display, fontSize: "28px", textAlign: "center", marginBottom: "8px", color: colors.white }}>For Schools & Districts</h2>
+          <p style={{ color: colors.gray300, textAlign: "center", marginBottom: "40px", fontSize: "16px" }}>Scalable reading support for every student. Annual billing saves 2 months.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
+            {schoolPlans.map((plan) => (
+              <div key={plan.name} style={{ background: "#1F2937", borderRadius: "20px", padding: "32px", border: "2px solid #374151" }}>
+                <h3 style={{ fontFamily: font.display, fontSize: "22px", marginBottom: "4px", color: colors.white }}>{plan.name}</h3>
+                <p style={{ fontSize: "13px", color: colors.orange, fontWeight: 700, marginBottom: "12px" }}>{plan.students}</p>
+                <div style={{ display: "flex", alignItems: "baseline", gap: "4px", marginBottom: "4px" }}>
+                  <span style={{ fontFamily: font.display, fontSize: "38px", fontWeight: 800, color: colors.white }}>{plan.price}</span>
+                  <span style={{ color: colors.gray300, fontSize: "16px" }}>{plan.period}</span>
+                </div>
+                <p style={{ fontSize: "13px", color: colors.gray300, marginBottom: "24px" }}>{plan.annual}</p>
+                <div style={{ borderTop: "1px solid #374151", paddingTop: "20px", marginBottom: "24px" }}>
+                  {plan.features.map((f) => (
+                    <p key={f} style={{ fontSize: "14px", color: colors.gray300, padding: "5px 0", display: "flex", gap: "8px" }}>
+                      <span style={{ color: colors.green, fontWeight: 700 }}>✓</span> {f}
+                    </p>
+                  ))}
+                </div>
+                <a href="mailto:hello@neuroread.ai" style={{ display: "block", textAlign: "center", padding: "14px", background: colors.purple, color: colors.white, borderRadius: "12px", fontWeight: 700, fontSize: "16px", textDecoration: "none" }}>
+                  {plan.price === "Custom" ? "Contact us →" : "Get started →"}
+                </a>
+              </div>
+            ))}
+          </div>
+          <p style={{ textAlign: "center", color: colors.gray300, marginTop: "32px", fontSize: "14px" }}>
+            All school plans include a free demo. Email <span style={{ color: colors.orange }}>hello@neuroread.ai</span>
+          </p>
+        </div>
+      </div>
+
+      {/* FAQ */}
+      <div style={{ maxWidth: "640px", margin: "0 auto", padding: "56px 24px" }}>
+        <h2 style={{ fontFamily: font.display, fontSize: "28px", textAlign: "center", marginBottom: "32px" }}>Common questions</h2>
+        {[
+          { q: "Can I cancel anytime?", a: "Yes — no contracts, no commitment. Cancel any time from your account settings and you won't be charged again." },
+          { q: "Is the early access price really locked forever?", a: "Yes. Early Access members keep their $29/month rate permanently, even after we raise prices for new customers." },
+          { q: "What ages is NeuroRead designed for?", a: "NeuroRead works best for children aged 6–14 who are learning to read or struggling with reading confidence, including those with dyslexia, ADHD, or other learning differences." },
+          { q: "Do schools get a free trial?", a: "Yes — email us at hello@neuroread.ai and we'll set up a free 2-week pilot for your classroom or school." },
+          { q: "What devices does NeuroRead work on?", a: "NeuroRead works on any device with a modern browser — phones, tablets, laptops, and desktops. No app download needed." },
+        ].map((item) => (
+          <div key={item.q} style={{ borderBottom: `1px solid ${colors.gray100}`, padding: "20px 0" }}>
+            <p style={{ fontFamily: font.display, fontWeight: 700, fontSize: "17px", marginBottom: "8px" }}>{item.q}</p>
+            <p style={{ color: colors.gray700, fontSize: "15px", lineHeight: 1.7 }}>{item.a}</p>
+          </div>
+        ))}
+      </div>
+
+      <footer style={{ background: colors.gray900, color: colors.gray300, padding: "32px 24px", textAlign: "center", fontSize: "14px" }}>
+        <p style={{ fontFamily: font.display, color: colors.white, fontWeight: 700, fontSize: "18px", marginBottom: "8px" }}>Neuro<span style={{ color: colors.orange }}>Read</span></p>
+        <p>AI-powered reading support for neurodiverse learners.</p>
+        <p style={{ marginTop: "8px", opacity: 0.5 }}>© 2025 NeuroRead AI. hello@neuroread.ai</p>
+      </footer>
     </div>
   );
 }
@@ -377,7 +558,7 @@ export default function App() {
           { day: "Day 1 — Monday", title: "The Friendly Dog", passage: "Sam has a dog. The dog is big and brown. Sam and the dog play in the park every day.", tip: "Point to each word as you read it.", question: "Where do Sam and the dog play?", answers: ["In the park", "At school", "In the house"], correct: "In the park" },
           { day: "Day 2 — Tuesday", title: "A Rainy Morning", passage: "It rained this morning. Mia put on her red boots. She jumped in every puddle on the way to school.", tip: "Try reading it twice — the second time feels easier.", question: "What did Mia put on her feet?", answers: ["Her red boots", "Her socks", "Her shoes"], correct: "Her red boots" },
           { day: "Day 3 — Wednesday", title: "The Lost Kite", passage: "Ben flew his kite in the wind. The string got loose. The kite went up and up into the big blue sky.", tip: "Pause at every full stop. Let the words breathe.", question: "What happened to the kite string?", answers: ["It got loose", "It snapped", "It got longer"], correct: "It got loose" },
-          { day: "Day 4 — Thursday", title: "Baking Cookies", passage: "Lily and her mom made cookies. They mixed flour, butter, and sugar. The kitchen smelled sweet and warm.", tip: "If a word is tricky, skip it and come back.", question: "How did the kitchen smell?", answers: ["Sweet and warm", "Cold and empty", "Smoky and dark"], correct: "Sweet and warm" },
+          { day: "Day 4 — Thursday", title: "Baking Cookies", passage: "Lily and her mum made cookies. They mixed flour, butter, and sugar. The kitchen smelled sweet and warm.", tip: "If a word is tricky, skip it and come back.", question: "How did the kitchen smell?", answers: ["Sweet and warm", "Cold and empty", "Smoky and dark"], correct: "Sweet and warm" },
           { day: "Day 5 — Friday", title: "My Superpower", passage: "Every reader starts somewhere. Each word you read makes your brain stronger. You are building your superpower right now.", tip: "Read this one out loud — you deserve to hear yourself do it.", question: "What are you building when you read?", answers: ["Your superpower", "A tower", "A story"], correct: "Your superpower" },
         ],
       });
@@ -393,10 +574,35 @@ export default function App() {
 
   if (screen === "success") return <SuccessScreen onBegin={() => setScreen("onboarding")} />;
   if (screen === "paywall") return <PaywallScreen onBack={() => setScreen(plan ? "dashboard" : "landing")} />;
-  if (screen === "landing") return <LandingScreen onStart={() => setScreen("onboarding")} onPay={() => { window.location.href = STRIPE_URL; }} />;
-  if (screen === "onboarding") return <OnboardingScreen onComplete={(p) => { setProfile(p); buildPlan(p); }} onBack={() => setScreen("landing")} />;
+  if (screen === "pricing") return <PricingScreen onBack={() => setScreen("landing")} onStart={() => setScreen("onboarding")} />;
+
+  if (screen === "landing") return (
+    <LandingScreen
+      onStart={() => setScreen("onboarding")}
+      onPay={() => { window.location.href = STRIPE_URL; }}
+      onPricing={() => setScreen("pricing")}
+    />
+  );
+
+  if (screen === "onboarding") return (
+    <OnboardingScreen
+      onComplete={(p) => { setProfile(p); buildPlan(p); }}
+      onBack={() => setScreen("landing")}
+    />
+  );
+
   if (screen === "generating" && profile) return <GeneratingScreen profile={profile} />;
-  if (screen === "dashboard" && profile && plan) return <DashboardScreen profile={profile} plan={plan} completedLessons={completedLessons} onStartLesson={(idx) => { setActiveLessonIdx(idx); setScreen("lesson"); }} onBack={() => setScreen("landing")} />;
+
+  if (screen === "dashboard" && profile && plan) return (
+    <DashboardScreen
+      profile={profile}
+      plan={plan}
+      completedLessons={completedLessons}
+      onStartLesson={(idx) => { setActiveLessonIdx(idx); setScreen("lesson"); }}
+      onBack={() => setScreen("landing")}
+    />
+  );
+
   if (screen === "lesson" && plan) return (
     <LessonScreen
       lesson={plan.lessons[activeLessonIdx]}
@@ -411,5 +617,3 @@ export default function App() {
 
   return null;
 }
-   
-  
