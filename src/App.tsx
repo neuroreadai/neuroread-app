@@ -147,12 +147,7 @@ function LandingScreen({ onStart, onPay }: { onStart: () => void; onPay: () => v
         <p style={{ marginTop: "20px", fontSize: "14px", opacity: 0.7 }}>No commitment. Cancel anytime. Price locked for early members.</p>
       </div>
 
-      <div style={{ background: colors.softYellow, padding: "56px 24px", textAlign: "center" }}>
-        <h2 style={{ fontFamily: font.display, fontSize: "28px", marginBottom: "28px" }}>Watch NeuroRead work</h2>
-        <div style={{ position: "relative", paddingBottom: "56.25%", maxWidth: "640px", margin: "0 auto", borderRadius: "16px", overflow: "hidden", boxShadow: "0 8px 32px rgba(0,0,0,0.15)" }}>
-          <iframe style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", border: "none" }} src="https://www.youtube.com/embed/Qi45881u3b8" title="NeuroRead MVP Demo" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen />
-        </div>
-      </div>
+    
 
       <div style={{ padding: "64px 24px", maxWidth: "960px", margin: "0 auto" }}>
         <h2 style={{ fontFamily: font.display, fontSize: "32px", textAlign: "center", marginBottom: "40px" }}>Everything your child needs to grow</h2>
@@ -382,7 +377,7 @@ export default function App() {
           { day: "Day 1 — Monday", title: "The Friendly Dog", passage: "Sam has a dog. The dog is big and brown. Sam and the dog play in the park every day.", tip: "Point to each word as you read it.", question: "Where do Sam and the dog play?", answers: ["In the park", "At school", "In the house"], correct: "In the park" },
           { day: "Day 2 — Tuesday", title: "A Rainy Morning", passage: "It rained this morning. Mia put on her red boots. She jumped in every puddle on the way to school.", tip: "Try reading it twice — the second time feels easier.", question: "What did Mia put on her feet?", answers: ["Her red boots", "Her socks", "Her shoes"], correct: "Her red boots" },
           { day: "Day 3 — Wednesday", title: "The Lost Kite", passage: "Ben flew his kite in the wind. The string got loose. The kite went up and up into the big blue sky.", tip: "Pause at every full stop. Let the words breathe.", question: "What happened to the kite string?", answers: ["It got loose", "It snapped", "It got longer"], correct: "It got loose" },
-          { day: "Day 4 — Thursday", title: "Baking Cookies", passage: "Lily and her mum made cookies. They mixed flour, butter, and sugar. The kitchen smelled sweet and warm.", tip: "If a word is tricky, skip it and come back.", question: "How did the kitchen smell?", answers: ["Sweet and warm", "Cold and empty", "Smoky and dark"], correct: "Sweet and warm" },
+          { day: "Day 4 — Thursday", title: "Baking Cookies", passage: "Lily and her mom made cookies. They mixed flour, butter, and sugar. The kitchen smelled sweet and warm.", tip: "If a word is tricky, skip it and come back.", question: "How did the kitchen smell?", answers: ["Sweet and warm", "Cold and empty", "Smoky and dark"], correct: "Sweet and warm" },
           { day: "Day 5 — Friday", title: "My Superpower", passage: "Every reader starts somewhere. Each word you read makes your brain stronger. You are building your superpower right now.", tip: "Read this one out loud — you deserve to hear yourself do it.", question: "What are you building when you read?", answers: ["Your superpower", "A tower", "A story"], correct: "Your superpower" },
         ],
       });
