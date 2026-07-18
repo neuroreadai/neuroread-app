@@ -1,4 +1,3 @@
-// ─── LessonScreen.tsx ────────────────────────────────────────────────────────
 import { useState, useEffect, useRef, useCallback } from "react";
 
 interface Lesson {
@@ -60,6 +59,60 @@ function stripPunct(word: string): string {
   return word.replace(/[^a-zA-Z']/g, "").toLowerCase();
 }
 
+function syllabify(word: string): string {
+  const clean = word.replace(/[^a-zA-Z]/g, "").toLowerCase();
+  if (clean.length <= 3) return clean;
+  const vowels = "aeiouy";
+  let result = "";
+  let syllableCount = 0;
+  for (let i = 0; i < clean.length; i++) {
+    result += clean[i];
+    const isVowel = vowels.includes(clean[i]);
+    const nextIsVowel = i + 1 < clean.length && vowels.includes(clean[i + 1]);
+    if (isVowel && !nextIsVowel && i + 2 < clean.length &&
+        vowels.includes(clean[i + 2]) && i > 0) {
+      result += "·";
+      syllableCount++;
+    } else if (!isVowel && i + 1 < clean.length && clean[i] === clean[i + 1] &&
+               i + 2 < clean.length && syllableCount > 0) {
+      result += "·";
+      syllableCount++;
+    }
+  }
+  return result || clean;
+}
+
+function SyllablePopup({ word, onClose }: { word: string; onClose: () => void }) {
+  const syllables = syllabify(word);
+
+  function speakWord() {
+    if (!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(word);
+    u.rate = 0.6;
+    window.speechSynthesis.speak(u);
+  }
+
+  return (
+    <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 100, padding: "24px" }} onClick={onClose}>
+      <div style={{ background: colors.white, borderRadius: "20px", padding: "32px", maxWidth: "340px", width: "100%", textAlign: "center", boxShadow: "0 20px 60px rgba(0,0,0,0.3)" }} onClick={(e) => e.stopPropagation()}>
+        <p style={{ fontSize: "13px", fontWeight: 700, color: colors.orange, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "8px" }}>Let's practise this word</p>
+        <h2 style={{ fontFamily: font.display, fontSize: "42px", color: colors.gray900, marginBottom: "8px" }}>{word}</h2>
+        <div style={{ background: colors.softYellow, borderRadius: "12px", padding: "16px", marginBottom: "20px" }}>
+          <p style={{ fontSize: "13px", color: colors.gray500, marginBottom: "4px" }}>Break it into parts:</p>
+          <p style={{ fontFamily: font.display, fontSize: "32px", color: colors.purple, letterSpacing: "0.1em", fontWeight: 700 }}>{syllables}</p>
+        </div>
+        <button onClick={speakWord} style={{ width: "100%", padding: "14px", background: colors.orange, color: colors.white, border: "none", borderRadius: "12px", fontWeight: 700, fontSize: "18px", cursor: "pointer", fontFamily: font.body, marginBottom: "12px" }}>
+          🔊 Hear it spoken slowly
+        </button>
+        <button onClick={onClose} style={{ width: "100%", padding: "12px", background: colors.gray100, color: colors.gray700, border: "none", borderRadius: "12px", fontWeight: 600, fontSize: "16px", cursor: "pointer", fontFamily: font.body }}>
+          Got it ✓
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function useTTS(words: string[]) {
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const [speaking, setSpeaking] = useState(false);
@@ -70,27 +123,20 @@ function useTTS(words: string[]) {
     if (!("speechSynthesis" in window)) return;
     window.speechSynthesis.cancel();
     if (timerRef.current) clearTimeout(timerRef.current);
-
     const text = words.join(" ");
     const utter = new SpeechSynthesisUtterance(text);
-    utter.rate = 0.8;
+    utter.rate = 0.75;
     utter.pitch = 1.05;
-
     let boundaryWorking = false;
-
     utter.onboundary = (e) => {
       if (e.name !== "word") return;
       boundaryWorking = true;
       let charCount = 0;
       for (let i = 0; i < words.length; i++) {
-        if (e.charIndex >= charCount && e.charIndex < charCount + words[i].length) {
-          setActiveIdx(i);
-          break;
-        }
+        if (e.charIndex >= charCount && e.charIndex < charCount + words[i].length) { setActiveIdx(i); break; }
         charCount += words[i].length + 1;
       }
     };
-
     utter.onstart = () => {
       setSpeaking(true);
       let idx = 0;
@@ -98,29 +144,15 @@ function useTTS(words: string[]) {
         if (boundaryWorking) return;
         if (idx >= words.length) { setActiveIdx(null); return; }
         setActiveIdx(idx);
-        // At rate 0.8, ~110 words/min = ~545ms per average word
-        // Scale by word length for better accuracy
         const wordLen = Math.max(2, words[idx].replace(/[^a-zA-Z]/g, "").length);
-        const duration = 300+ (wordLen * 25);
+        const duration = 240 + (wordLen * 18);
         idx++;
         timerRef.current = setTimeout(advance, duration);
       }
-      // Wait 400ms for TTS engine to spin up on mobile
       timerRef.current = setTimeout(advance, 50);
     };
-
-    utter.onend = () => {
-      setSpeaking(false);
-      setActiveIdx(null);
-      if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; }
-    };
-
-    utter.onerror = () => {
-      setSpeaking(false);
-      setActiveIdx(null);
-      if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; }
-    };
-
+    utter.onend = () => { setSpeaking(false); setActiveIdx(null); if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; } };
+    utter.onerror = () => { setSpeaking(false); setActiveIdx(null); if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; } };
     utterRef.current = utter;
     window.speechSynthesis.speak(utter);
   }, [words]);
@@ -132,11 +164,7 @@ function useTTS(words: string[]) {
     if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; }
   }, []);
 
-  useEffect(() => () => {
-    window.speechSynthesis.cancel();
-    if (timerRef.current) clearTimeout(timerRef.current);
-  }, []);
-
+  useEffect(() => () => { window.speechSynthesis.cancel(); if (timerRef.current) clearTimeout(timerRef.current); }, []);
   return { activeIdx, speaking, speak, stop };
 }
 
@@ -167,10 +195,7 @@ function useMicReading(words: string[], onHesitation: (h: HesitationWord) => voi
       for (const spoken of spokenWords) {
         if (pointer >= words.length) break;
         const target = stripPunct(words[pointer]);
-        if (spoken === target || spoken.includes(target) || target.includes(spoken)) {
-          pointer++;
-          lastMatchTimeRef.current = Date.now();
-        }
+        if (spoken === target || spoken.includes(target) || target.includes(spoken)) { pointer++; lastMatchTimeRef.current = Date.now(); }
       }
       if (pointer !== wordIdxRef.current) { wordIdxRef.current = pointer; setCurrentWordIdx(pointer); }
     };
@@ -240,15 +265,20 @@ function HighlightedPassage({ words, ttsActiveIdx, micActiveIdx, hesitatedIndice
   );
 }
 
-function HesitationReport({ hesitations }: { hesitations: HesitationWord[] }) {
+function HesitationReport({ hesitations, onWordTap }: { hesitations: HesitationWord[]; onWordTap: (word: string) => void }) {
   if (hesitations.length === 0) return null;
   return (
     <Card style={{ background: colors.redLight, border: `2px solid ${colors.red}`, marginTop: "16px" }}>
-      <p style={{ fontWeight: 700, color: colors.red, marginBottom: "8px", fontSize: "15px" }}>🔍 Words to practise together</p>
+      <p style={{ fontWeight: 700, color: colors.red, marginBottom: "4px", fontSize: "15px" }}>🔍 Words to practise together</p>
+      <p style={{ fontSize: "13px", color: colors.red, marginBottom: "8px", opacity: 0.8 }}>Tap any word to see how to say it!</p>
       <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-        {hesitations.map((h, i) => <span key={i} style={{ background: colors.white, border: `2px solid ${colors.red}`, borderRadius: "8px", padding: "4px 12px", fontSize: "16px", fontWeight: 700, color: colors.red }}>{h.word.replace(/[^a-zA-Z']/g, "")}</span>)}
+        {hesitations.map((h, i) => (
+          <button key={i} onClick={() => onWordTap(h.word.replace(/[^a-zA-Z']/g, ""))} style={{ background: colors.white, border: `2px solid ${colors.red}`, borderRadius: "8px", padding: "6px 14px", fontSize: "16px", fontWeight: 700, color: colors.red, cursor: "pointer", fontFamily: font.body }}>
+            {h.word.replace(/[^a-zA-Z']/g, "")} 🔍
+          </button>
+        ))}
       </div>
-      <p style={{ fontSize: "13px", color: colors.red, marginTop: "8px", opacity: 0.8 }}>These are words where the reader paused for 3+ seconds. Try reading them together!</p>
+      <p style={{ fontSize: "13px", color: colors.red, marginTop: "8px", opacity: 0.8 }}>These are words where the reader paused for 3+ seconds.</p>
     </Card>
   );
 }
@@ -259,12 +289,14 @@ export default function LessonScreen({ lesson, lessonIdx, totalLessons, isPaid, 
   const [mode, setMode] = useState<"idle" | "listen" | "read">("idle");
   const [hesitations, setHesitations] = useState<HesitationWord[]>([]);
   const [hesitatedIndices, setHesitatedIndices] = useState<Set<number>>(new Set());
+  const [syllableWord, setSyllableWord] = useState<string | null>(null);
   const words = tokenise(lesson.passage);
   const correct = selected === lesson.correct;
 
   const handleHesitation = useCallback((h: HesitationWord) => {
     setHesitations((prev) => prev.find((x) => x.index === h.index) ? prev : [...prev, h]);
     setHesitatedIndices((prev) => new Set([...prev, h.index]));
+    setSyllableWord(h.word.replace(/[^a-zA-Z']/g, ""));
   }, []);
 
   const { activeIdx: ttsActiveIdx, speaking, speak, stop: stopTTS } = useTTS(words);
@@ -281,11 +313,11 @@ export default function LessonScreen({ lesson, lessonIdx, totalLessons, isPaid, 
   }
 
   function handleStopAll() { stopTTS(); stopListening(); setMode("idle"); }
-
   useEffect(() => { if (stage !== "read") handleStopAll(); }, [stage]);
 
   return (
     <div style={{ minHeight: "100vh", background: colors.cream }}>
+      {syllableWord && <SyllablePopup word={syllableWord} onClose={() => setSyllableWord(null)} />}
       <NavBar onBack={() => { handleStopAll(); onBack(); }} label={`Lesson ${lessonIdx + 1} of ${totalLessons}`} />
       <div style={{ maxWidth: "640px", margin: "0 auto", padding: "40px 24px" }}>
 
@@ -302,7 +334,6 @@ export default function LessonScreen({ lesson, lessonIdx, totalLessons, isPaid, 
               <button onClick={handleListen} style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", border: `2px solid ${mode === "listen" ? colors.orange : colors.gray300}`, background: mode === "listen" ? colors.orange : colors.white, color: mode === "listen" ? colors.white : colors.gray700, fontWeight: 700, fontSize: "16px", cursor: "pointer", fontFamily: font.body, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
                 {mode === "listen" ? "⏹ Stop" : "🔊 Listen"}
               </button>
-
               {!isPaid ? (
                 <button onClick={onUpgrade} style={{ flex: 1, padding: "14px 16px", borderRadius: "12px", border: `2px solid ${colors.purple}`, background: colors.purpleLight, color: colors.purpleDark, fontWeight: 700, fontSize: "15px", cursor: "pointer", fontFamily: font.body, display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}>
                   🔒 Unlock mic reading
@@ -346,7 +377,7 @@ export default function LessonScreen({ lesson, lessonIdx, totalLessons, isPaid, 
               <p style={{ fontSize: "15px", color: colors.gray700, margin: 0 }}>{lesson.tip}</p>
             </Card>
 
-            {isPaid && <HesitationReport hesitations={hesitations} />}
+            {isPaid && <HesitationReport hesitations={hesitations} onWordTap={(w) => setSyllableWord(w)} />}
 
             <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", margin: "16px 0", fontSize: "13px", color: colors.gray500 }}>
               <span><span style={{ background: colors.orange, color: colors.white, borderRadius: "4px", padding: "1px 6px" }}>word</span> = current word</span>
@@ -409,8 +440,13 @@ export default function LessonScreen({ lesson, lessonIdx, totalLessons, isPaid, 
             {isPaid && hesitations.length > 0 && (
               <Card style={{ marginBottom: "24px", textAlign: "left" }}>
                 <p style={{ fontWeight: 700, color: colors.purpleDark, marginBottom: "8px", fontFamily: font.display }}>🎯 Words to revisit</p>
+                <p style={{ fontSize: "14px", color: colors.gray500, marginBottom: "12px" }}>Tap any word to see how to say it!</p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                  {hesitations.map((h, i) => <span key={i} style={{ background: colors.orangeLight, border: `2px solid ${colors.orange}`, borderRadius: "8px", padding: "4px 12px", fontSize: "16px", fontWeight: 700, color: colors.orange }}>{h.word.replace(/[^a-zA-Z']/g, "")}</span>)}
+                  {hesitations.map((h, i) => (
+                    <button key={i} onClick={() => setSyllableWord(h.word.replace(/[^a-zA-Z']/g, ""))} style={{ background: colors.orangeLight, border: `2px solid ${colors.orange}`, borderRadius: "8px", padding: "6px 14px", fontSize: "16px", fontWeight: 700, color: colors.orange, cursor: "pointer", fontFamily: font.body }}>
+                      {h.word.replace(/[^a-zA-Z']/g, "")} 🔍
+                    </button>
+                  ))}
                 </div>
                 <p style={{ fontSize: "13px", color: colors.gray500, marginTop: "8px" }}>Share this with a parent or teacher to practise together.</p>
               </Card>
