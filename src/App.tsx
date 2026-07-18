@@ -239,7 +239,8 @@ function GeneratingScreen({ profile }: { profile: ChildProfile }) {
   );
 }
 
-function DashboardScreen({ profile, plan, completedLessons, onStartLesson, onBack }: { profile: ChildProfile; plan: LessonPlan; completedLessons: number[]; onStartLesson: (idx: number) => void; onBack: () => void }) {
+function DashboardScreen({ profile, plan, completedLessons, onStartLesson, onBack, onNextWeek }: { profile: ChildProfile; plan: LessonPlan; completedLessons: number[]; onStartLesson: (idx: number) => void; onBack: () => void; onNextWeek: () => void }) {
+  const allDone = completedLessons.length === plan.lessons.length;
   return (
     <div style={{ minHeight: "100vh", background: colors.cream }}>
       <NavBar onBack={onBack} label="Dashboard" />
@@ -286,6 +287,21 @@ function DashboardScreen({ profile, plan, completedLessons, onStartLesson, onBac
           <p style={{ fontSize: "14px", fontWeight: 700, color: colors.orange, marginBottom: "4px" }}>💡 Parent tip</p>
           <p style={{ fontSize: "15px", color: colors.gray700 }}>Sit with {profile.name} for their first lesson this week. Hearing you read along builds confidence faster than anything else.</p>
         </Card>
+
+        {allDone && (
+          <div style={{ marginTop: "28px", background: `linear-gradient(135deg, ${colors.green}, #047857)`, borderRadius: "20px", padding: "28px", color: colors.white, textAlign: "center" }}>
+            <div style={{ fontSize: "48px", marginBottom: "12px" }}>🎉</div>
+            <h2 style={{ fontFamily: font.display, fontSize: "24px", marginBottom: "8px" }}>
+              {profile.name} finished the week!
+            </h2>
+            <p style={{ opacity: 0.9, fontSize: "16px", marginBottom: "24px" }}>
+              What an achievement! Ready to build next week's plan?
+            </p>
+            <button onClick={onNextWeek} style={{ padding: "16px 32px", background: colors.white, color: colors.green, border: "none", borderRadius: "12px", fontWeight: 800, fontSize: "18px", cursor: "pointer", fontFamily: font.display, width: "100%" }}>
+              Build next week's plan ✨
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -321,7 +337,7 @@ function PaywallScreen({ onBack }: { onBack: () => void }) {
           <p style={{ fontSize: "13px", fontWeight: 700, color: colors.purple, marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.08em" }}>Early Access</p>
           <p style={{ fontFamily: font.display, fontSize: "48px", fontWeight: 800, color: colors.purpleDark }}>$29<span style={{ fontSize: "18px", color: colors.gray500 }}>/mo</span></p>
           <p style={{ color: colors.gray500, fontSize: "14px", marginBottom: "20px" }}>Price locked for early members — never goes up.</p>
-          {["Personalised AI lesson plan each week", "Dyslexia-friendly reading sessions", "🎤 Microphone reading mode", "🔍 Hesitation detection & word reports", "🔊 Read-aloud with word highlighting", "Progress tracking for parents", "Cancel anytime"].map((f) => (
+          {["Personalised AI lesson plan each week", "Dyslexia-friendly reading sessions", "🎤 Microphone reading mode", "🔍 Hesitation detection & word reports", "🔊 Read-aloud with word highlighting", "📖 Syllable breakdown for hard words", "🔄 New plan every week automatically", "Progress tracking for parents", "Cancel anytime"].map((f) => (
             <p key={f} style={{ textAlign: "left", padding: "6px 0", fontSize: "15px", color: colors.gray700, borderBottom: `1px solid ${colors.gray100}` }}>✓ {f}</p>
           ))}
         </Card>
@@ -334,93 +350,33 @@ function PaywallScreen({ onBack }: { onBack: () => void }) {
 
 function PricingScreen({ onBack, onStart }: { onBack: () => void; onStart: () => void }) {
   const familyPlans = [
-    {
-      name: "Early Access",
-      badge: "⚡ Limited spots",
-      price: "$29",
-      period: "/month",
-      note: "Price locked forever for early members",
-      color: colors.orange,
-      features: ["1 child profile", "AI-generated weekly lesson plan", "Word highlighting & read-aloud", "🎤 Mic reading mode", "🔍 Hesitation detection", "Comprehension checks", "Progress tracking", "Cancel anytime"],
-      cta: "Get Early Access",
-      href: STRIPE_URL,
-      highlight: true,
-    },
-    {
-      name: "Individual Family",
-      badge: "Coming soon",
-      price: "$39",
-      period: "/month",
-      note: "For families joining after early access",
-      color: colors.purple,
-      features: ["1 child profile", "AI-generated weekly lesson plan", "Word highlighting & read-aloud", "🎤 Mic reading mode", "🔍 Hesitation detection", "Comprehension checks", "Progress tracking", "Cancel anytime"],
-      cta: "Coming Soon",
-      href: null,
-      highlight: false,
-    },
-    {
-      name: "Family Plus",
-      badge: "Coming soon",
-      price: "$49",
-      period: "/month",
-      note: "Support up to 3 children",
-      color: colors.green,
-      features: ["Up to 3 child profiles", "Individual AI plans per child", "Word highlighting & read-aloud", "🎤 Mic reading mode", "🔍 Hesitation detection", "Comprehension checks", "Progress tracking per child", "Cancel anytime"],
-      cta: "Coming Soon",
-      href: null,
-      highlight: false,
-    },
+    { name: "Early Access", badge: "⚡ Limited spots", price: "$29", period: "/month", note: "Price locked forever for early members", color: colors.orange, features: ["1 child profile", "AI-generated weekly lesson plan", "Word highlighting & read-aloud", "🎤 Mic reading mode", "🔍 Hesitation detection", "📖 Syllable breakdown popup", "🔄 New plan every week", "Comprehension checks", "Progress tracking", "Cancel anytime"], cta: "Get Early Access", href: STRIPE_URL, highlight: true },
+    { name: "Individual Family", badge: "Coming soon", price: "$39", period: "/month", note: "For families joining after early access", color: colors.purple, features: ["1 child profile", "AI-generated weekly lesson plan", "Word highlighting & read-aloud", "🎤 Mic reading mode", "🔍 Hesitation detection", "📖 Syllable breakdown popup", "🔄 New plan every week", "Comprehension checks", "Progress tracking", "Cancel anytime"], cta: "Coming Soon", href: null, highlight: false },
+    { name: "Family Plus", badge: "Coming soon", price: "$49", period: "/month", note: "Support up to 3 children", color: colors.green, features: ["Up to 3 child profiles", "Individual AI plans per child", "Word highlighting & read-aloud", "🎤 Mic reading mode", "🔍 Hesitation detection", "📖 Syllable breakdown popup", "🔄 New plan every week", "Comprehension checks", "Progress tracking per child", "Cancel anytime"], cta: "Coming Soon", href: null, highlight: false },
   ];
 
   const schoolPlans = [
-    {
-      name: "Classroom",
-      price: "$199",
-      period: "/month",
-      annual: "$1,990/year — save 2 months",
-      students: "Up to 30 students",
-      features: ["30 student profiles", "AI lesson plans per student", "Teacher dashboard", "Progress reports", "Word highlighting & mic reading", "Hesitation detection per student", "Email support"],
-    },
-    {
-      name: "School",
-      price: "$499",
-      period: "/month",
-      annual: "$4,990/year — save 2 months",
-      students: "Up to 150 students",
-      features: ["150 student profiles", "AI lesson plans per student", "Admin & teacher dashboards", "School-wide progress reporting", "Word highlighting & mic reading", "Hesitation detection per student", "Priority support", "Onboarding session included"],
-    },
-    {
-      name: "District",
-      price: "Custom",
-      period: "",
-      annual: "Annual billing available",
-      students: "Unlimited students",
-      features: ["Unlimited student profiles", "AI lesson plans per student", "District-wide admin dashboard", "Custom reporting & analytics", "Full feature access", "Dedicated account manager", "Staff training included", "Custom onboarding"],
-    },
+    { name: "Classroom", price: "$199", period: "/month", annual: "$1,990/year — save 2 months", students: "Up to 30 students", features: ["30 student profiles", "AI lesson plans per student", "Teacher dashboard", "Progress reports", "Word highlighting & mic reading", "Hesitation detection per student", "Email support"] },
+    { name: "School", price: "$499", period: "/month", annual: "$4,990/year — save 2 months", students: "Up to 150 students", features: ["150 student profiles", "AI lesson plans per student", "Admin & teacher dashboards", "School-wide progress reporting", "Word highlighting & mic reading", "Hesitation detection per student", "Priority support", "Onboarding session included"] },
+    { name: "District", price: "Custom", period: "", annual: "Annual billing available", students: "Unlimited students", features: ["Unlimited student profiles", "AI lesson plans per student", "District-wide admin dashboard", "Custom reporting & analytics", "Full feature access", "Dedicated account manager", "Staff training included", "Custom onboarding"] },
   ];
 
   return (
     <div style={{ minHeight: "100vh", background: colors.cream }}>
       <NavBar onBack={onBack} />
-
       <div style={{ background: `linear-gradient(135deg, ${colors.purpleDark}, ${colors.purple})`, color: colors.white, padding: "56px 24px", textAlign: "center" }}>
         <p style={{ fontSize: "13px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", opacity: 0.8, marginBottom: "12px" }}>Simple, transparent pricing</p>
         <h1 style={{ fontFamily: font.display, fontSize: "clamp(32px, 5vw, 52px)", fontWeight: 800, marginBottom: "16px" }}>Plans for every family and school</h1>
         <p style={{ fontSize: "18px", opacity: 0.9, maxWidth: "500px", margin: "0 auto" }}>Start free. Upgrade when you're ready. Cancel anytime.</p>
       </div>
 
-      {/* Family Plans */}
       <div style={{ maxWidth: "960px", margin: "0 auto", padding: "56px 24px" }}>
         <h2 style={{ fontFamily: font.display, fontSize: "28px", textAlign: "center", marginBottom: "8px" }}>For Families</h2>
         <p style={{ color: colors.gray500, textAlign: "center", marginBottom: "40px", fontSize: "16px" }}>Personal reading support built around your child</p>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px" }}>
           {familyPlans.map((plan) => (
             <div key={plan.name} style={{ background: colors.white, borderRadius: "20px", padding: "32px", border: `2px solid ${plan.highlight ? plan.color : colors.gray100}`, boxShadow: plan.highlight ? "0 8px 32px rgba(234,88,12,0.15)" : "0 2px 12px rgba(0,0,0,0.07)", position: "relative" }}>
-              {plan.highlight && (
-                <div style={{ position: "absolute", top: "-14px", left: "50%", transform: "translateX(-50%)", background: colors.orange, color: colors.white, padding: "4px 16px", borderRadius: "99px", fontSize: "12px", fontWeight: 700, whiteSpace: "nowrap" }}>
-                  ⚡ Early Access — Limited Spots
-                </div>
-              )}
+              {plan.highlight && <div style={{ position: "absolute", top: "-14px", left: "50%", transform: "translateX(-50%)", background: colors.orange, color: colors.white, padding: "4px 16px", borderRadius: "99px", fontSize: "12px", fontWeight: 700, whiteSpace: "nowrap" }}>⚡ Early Access — Limited Spots</div>}
               <p style={{ fontSize: "12px", fontWeight: 700, color: plan.color, letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: "8px" }}>{plan.badge}</p>
               <h3 style={{ fontFamily: font.display, fontSize: "22px", marginBottom: "8px" }}>{plan.name}</h3>
               <div style={{ display: "flex", alignItems: "baseline", gap: "4px", marginBottom: "4px" }}>
@@ -429,34 +385,22 @@ function PricingScreen({ onBack, onStart }: { onBack: () => void; onStart: () =>
               </div>
               <p style={{ fontSize: "13px", color: colors.gray500, marginBottom: "24px" }}>{plan.note}</p>
               <div style={{ borderTop: `1px solid ${colors.gray100}`, paddingTop: "20px", marginBottom: "24px" }}>
-                {plan.features.map((f) => (
-                  <p key={f} style={{ fontSize: "15px", color: colors.gray700, padding: "5px 0", display: "flex", gap: "8px" }}>
-                    <span style={{ color: colors.green, fontWeight: 700 }}>✓</span> {f}
-                  </p>
-                ))}
+                {plan.features.map((f) => <p key={f} style={{ fontSize: "15px", color: colors.gray700, padding: "5px 0", display: "flex", gap: "8px" }}><span style={{ color: colors.green, fontWeight: 700 }}>✓</span> {f}</p>)}
               </div>
               {plan.href ? (
-                <a href={plan.href} target="_blank" rel="noopener noreferrer" style={{ display: "block", textAlign: "center", padding: "14px", background: plan.color, color: colors.white, borderRadius: "12px", fontWeight: 700, fontSize: "16px", textDecoration: "none" }}>
-                  {plan.cta} →
-                </a>
+                <a href={plan.href} target="_blank" rel="noopener noreferrer" style={{ display: "block", textAlign: "center", padding: "14px", background: plan.color, color: colors.white, borderRadius: "12px", fontWeight: 700, fontSize: "16px", textDecoration: "none" }}>{plan.cta} →</a>
               ) : (
-                <div style={{ textAlign: "center", padding: "14px", background: colors.gray100, color: colors.gray500, borderRadius: "12px", fontWeight: 700, fontSize: "16px" }}>
-                  {plan.cta}
-                </div>
+                <div style={{ textAlign: "center", padding: "14px", background: colors.gray100, color: colors.gray500, borderRadius: "12px", fontWeight: 700, fontSize: "16px" }}>{plan.cta}</div>
               )}
             </div>
           ))}
         </div>
-
         <div style={{ textAlign: "center", marginTop: "32px" }}>
           <p style={{ color: colors.gray500, marginBottom: "16px" }}>Not sure yet?</p>
-          <button onClick={onStart} style={{ padding: "14px 32px", background: colors.purpleLight, color: colors.purple, border: `2px solid ${colors.purple}`, borderRadius: "12px", fontWeight: 700, fontSize: "16px", cursor: "pointer", fontFamily: font.body }}>
-            Try a free lesson — no account needed
-          </button>
+          <button onClick={onStart} style={{ padding: "14px 32px", background: colors.purpleLight, color: colors.purple, border: `2px solid ${colors.purple}`, borderRadius: "12px", fontWeight: 700, fontSize: "16px", cursor: "pointer", fontFamily: font.body }}>Try a free lesson — no account needed</button>
         </div>
       </div>
 
-      {/* School Plans */}
       <div style={{ background: colors.gray900, padding: "56px 24px" }}>
         <div style={{ maxWidth: "960px", margin: "0 auto" }}>
           <h2 style={{ fontFamily: font.display, fontSize: "28px", textAlign: "center", marginBottom: "8px", color: colors.white }}>For Schools & Districts</h2>
@@ -472,11 +416,7 @@ function PricingScreen({ onBack, onStart }: { onBack: () => void; onStart: () =>
                 </div>
                 <p style={{ fontSize: "13px", color: colors.gray300, marginBottom: "24px" }}>{plan.annual}</p>
                 <div style={{ borderTop: "1px solid #374151", paddingTop: "20px", marginBottom: "24px" }}>
-                  {plan.features.map((f) => (
-                    <p key={f} style={{ fontSize: "14px", color: colors.gray300, padding: "5px 0", display: "flex", gap: "8px" }}>
-                      <span style={{ color: colors.green, fontWeight: 700 }}>✓</span> {f}
-                    </p>
-                  ))}
+                  {plan.features.map((f) => <p key={f} style={{ fontSize: "14px", color: colors.gray300, padding: "5px 0", display: "flex", gap: "8px" }}><span style={{ color: colors.green, fontWeight: 700 }}>✓</span> {f}</p>)}
                 </div>
                 <a href="mailto:hello@neuroread.ai" style={{ display: "block", textAlign: "center", padding: "14px", background: colors.purple, color: colors.white, borderRadius: "12px", fontWeight: 700, fontSize: "16px", textDecoration: "none" }}>
                   {plan.price === "Custom" ? "Contact us →" : "Get started →"}
@@ -484,13 +424,10 @@ function PricingScreen({ onBack, onStart }: { onBack: () => void; onStart: () =>
               </div>
             ))}
           </div>
-          <p style={{ textAlign: "center", color: colors.gray300, marginTop: "32px", fontSize: "14px" }}>
-            All school plans include a free demo. Email <span style={{ color: colors.orange }}>hello@neuroread.ai</span>
-          </p>
+          <p style={{ textAlign: "center", color: colors.gray300, marginTop: "32px", fontSize: "14px" }}>All school plans include a free demo. Email <span style={{ color: colors.orange }}>hello@neuroread.ai</span></p>
         </div>
       </div>
 
-      {/* FAQ */}
       <div style={{ maxWidth: "640px", margin: "0 auto", padding: "56px 24px" }}>
         <h2 style={{ fontFamily: font.display, fontSize: "28px", textAlign: "center", marginBottom: "32px" }}>Common questions</h2>
         {[
@@ -558,7 +495,7 @@ export default function App() {
           { day: "Day 1 — Monday", title: "The Friendly Dog", passage: "Sam has a dog. The dog is big and brown. Sam and the dog play in the park every day.", tip: "Point to each word as you read it.", question: "Where do Sam and the dog play?", answers: ["In the park", "At school", "In the house"], correct: "In the park" },
           { day: "Day 2 — Tuesday", title: "A Rainy Morning", passage: "It rained this morning. Mia put on her red boots. She jumped in every puddle on the way to school.", tip: "Try reading it twice — the second time feels easier.", question: "What did Mia put on her feet?", answers: ["Her red boots", "Her socks", "Her shoes"], correct: "Her red boots" },
           { day: "Day 3 — Wednesday", title: "The Lost Kite", passage: "Ben flew his kite in the wind. The string got loose. The kite went up and up into the big blue sky.", tip: "Pause at every full stop. Let the words breathe.", question: "What happened to the kite string?", answers: ["It got loose", "It snapped", "It got longer"], correct: "It got loose" },
-          { day: "Day 4 — Thursday", title: "Baking Cookies", passage: "Lily and her mom made cookies. They mixed flour, butter, and sugar. The kitchen smelled sweet and warm.", tip: "If a word is tricky, skip it and come back.", question: "How did the kitchen smell?", answers: ["Sweet and warm", "Cold and empty", "Smoky and dark"], correct: "Sweet and warm" },
+          { day: "Day 4 — Thursday", title: "Baking Cookies", passage: "Lily and her mum made cookies. They mixed flour, butter, and sugar. The kitchen smelled sweet and warm.", tip: "If a word is tricky, skip it and come back.", question: "How did the kitchen smell?", answers: ["Sweet and warm", "Cold and empty", "Smoky and dark"], correct: "Sweet and warm" },
           { day: "Day 5 — Friday", title: "My Superpower", passage: "Every reader starts somewhere. Each word you read makes your brain stronger. You are building your superpower right now.", tip: "Read this one out loud — you deserve to hear yourself do it.", question: "What are you building when you read?", answers: ["Your superpower", "A tower", "A story"], correct: "Your superpower" },
         ],
       });
@@ -572,47 +509,32 @@ export default function App() {
     setScreen("dashboard");
   }
 
+  function handleNextWeek() {
+    setCompletedLessons([]);
+    setPlan(null);
+    if (profile) buildPlan(profile);
+  }
+
   if (screen === "success") return <SuccessScreen onBegin={() => setScreen("onboarding")} />;
   if (screen === "paywall") return <PaywallScreen onBack={() => setScreen(plan ? "dashboard" : "landing")} />;
   if (screen === "pricing") return <PricingScreen onBack={() => setScreen("landing")} onStart={() => setScreen("onboarding")} />;
 
   if (screen === "landing") return (
-    <LandingScreen
-      onStart={() => setScreen("onboarding")}
-      onPay={() => { window.location.href = STRIPE_URL; }}
-      onPricing={() => setScreen("pricing")}
-    />
+    <LandingScreen onStart={() => setScreen("onboarding")} onPay={() => { window.location.href = STRIPE_URL; }} onPricing={() => setScreen("pricing")} />
   );
 
   if (screen === "onboarding") return (
-    <OnboardingScreen
-      onComplete={(p) => { setProfile(p); buildPlan(p); }}
-      onBack={() => setScreen("landing")}
-    />
+    <OnboardingScreen onComplete={(p) => { setProfile(p); buildPlan(p); }} onBack={() => setScreen("landing")} />
   );
 
   if (screen === "generating" && profile) return <GeneratingScreen profile={profile} />;
 
   if (screen === "dashboard" && profile && plan) return (
-    <DashboardScreen
-      profile={profile}
-      plan={plan}
-      completedLessons={completedLessons}
-      onStartLesson={(idx) => { setActiveLessonIdx(idx); setScreen("lesson"); }}
-      onBack={() => setScreen("landing")}
-    />
+    <DashboardScreen profile={profile} plan={plan} completedLessons={completedLessons} onStartLesson={(idx) => { setActiveLessonIdx(idx); setScreen("lesson"); }} onBack={() => setScreen("landing")} onNextWeek={handleNextWeek} />
   );
 
   if (screen === "lesson" && plan) return (
-    <LessonScreen
-      lesson={plan.lessons[activeLessonIdx]}
-      lessonIdx={activeLessonIdx}
-      totalLessons={plan.lessons.length}
-      isPaid={isPaid}
-      onComplete={handleLessonComplete}
-      onBack={() => setScreen("dashboard")}
-      onUpgrade={() => setScreen("paywall")}
-    />
+    <LessonScreen lesson={plan.lessons[activeLessonIdx]} lessonIdx={activeLessonIdx} totalLessons={plan.lessons.length} isPaid={isPaid} onComplete={handleLessonComplete} onBack={() => setScreen("dashboard")} onUpgrade={() => setScreen("paywall")} />
   );
 
   return null;
