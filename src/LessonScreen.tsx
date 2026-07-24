@@ -226,7 +226,14 @@ function useMicReading(words: string[], onHesitation: (h: HesitationWord) => voi
   }, []);
 
   useEffect(() => () => { stopListening(); }, [stopListening]);
-  return { listening, currentWordIdx, micSupported, startListening, stopListening };
+ const advanceWord = useCallback(() => {
+  const next = Math.min(wordIdxRef.current + 1, words.length);
+  wordIdxRef.current = next;
+  setCurrentWordIdx(next);
+  lastMatchTimeRef.current = Date.now();
+}, [words.length]);
+
+return { listening, currentWordIdx, micSupported, startListening, stopListening, advanceWord };
 }
 
 function NavBar({ onBack, label }: { onBack?: () => void; label?: string }) {
@@ -307,8 +314,8 @@ export default function LessonScreen({ lesson, lessonIdx, totalLessons, isPaid, 
   }, []);
 
   const { activeIdx: ttsActiveIdx, speaking, speak, stop: stopTTS } = useTTS(words);
-  const { listening, currentWordIdx, micSupported, startListening, stopListening } = useMicReading(words, handleHesitation);
-
+  ;
+const { listening, currentWordIdx, micSupported, startListening, stopListening, advanceWord } = useMicReading(words, handleHesitation);
   function handleListen() {
     if (mode === "listen") { stopTTS(); setMode("idle"); }
     else { stopListening(); setMode("listen"); speak(); }
@@ -328,6 +335,7 @@ export default function LessonScreen({ lesson, lessonIdx, totalLessons, isPaid, 
       setSkippedWords((prev) => [...prev, clean]);
     }
     setSyllableWord(null);
+    advanceWord(); 
   }
 
   return (
