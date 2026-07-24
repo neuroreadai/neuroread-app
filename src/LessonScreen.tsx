@@ -395,4 +395,115 @@ export default function LessonScreen({ lesson, lessonIdx, totalLessons, isPaid, 
 
             <Card style={{ marginBottom: "20px", background: colors.softYellow, border: `2px solid #FDE68A` }}>
               <p style={{ fontSize: "14px", fontWeight: 700, color: colors.orange, marginBottom: "4px" }}>✏️ Reading tip</p>
-              <p style={{ fontSize: "1
+              <p style={{ fontSize: "15px", color: colors.gray700, margin: 0 }}>{lesson.tip}</p>
+            </Card>
+
+            {isPaid && <HesitationReport hesitations={hesitations} onWordTap={(w) => setSyllableWord(w)} />}
+
+            {skippedWords.length > 0 && (
+              <Card style={{ background: colors.softYellow, border: `2px solid #FDE68A`, marginTop: "16px" }}>
+                <p style={{ fontWeight: 700, color: colors.orange, marginBottom: "4px", fontSize: "15px" }}>⏭ Skipped words</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {skippedWords.map((w, i) => (
+                    <button key={i} onClick={() => setSyllableWord(w)} style={{ background: colors.white, border: `2px solid ${colors.orange}`, borderRadius: "8px", padding: "4px 12px", fontSize: "15px", fontWeight: 700, color: colors.orange, cursor: "pointer", fontFamily: font.body }}>
+                      {w} 📖
+                    </button>
+                  ))}
+                </div>
+              </Card>
+            )}
+
+            <div style={{ display: "flex", gap: "16px", flexWrap: "wrap", margin: "16px 0", fontSize: "13px", color: colors.gray500 }}>
+              <span><span style={{ background: colors.orange, color: colors.white, borderRadius: "4px", padding: "1px 6px" }}>word</span> = current word</span>
+              {isPaid && <><span><span style={{ color: colors.green, fontWeight: 700 }}>word</span> = already read</span><span><span style={{ background: colors.redLight, color: colors.red, borderRadius: "4px", padding: "1px 6px" }}>word</span> = hesitation</span></>}
+            </div>
+
+            <PrimaryBtn onClick={() => { handleStopAll(); setStage("question"); }}>
+              I've read it — check my understanding →
+            </PrimaryBtn>
+          </div>
+        )}
+
+        {stage === "question" && (
+          <div>
+            <h2 style={{ fontFamily: font.display, fontSize: "24px", marginBottom: "8px" }}>Quick check ✅</h2>
+            <p style={{ color: colors.gray700, marginBottom: "24px", fontSize: "18px" }}>{lesson.question}</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "24px" }}>
+              {lesson.answers.map((a) => {
+                const isSelected = selected === a;
+                const isCorrect = a === lesson.correct;
+                let bg = colors.white, border = colors.gray300, color = colors.gray700;
+                if (selected) {
+                  if (isCorrect) { bg = colors.greenLight; border = colors.green; color = colors.green; }
+                  else if (isSelected) { bg = colors.redLight; border = colors.red; color = colors.red; }
+                } else if (isSelected) { bg = colors.purpleLight; border = colors.purple; color = colors.purpleDark; }
+                return (
+                  <button key={a} onClick={() => !selected && setSelected(a)} style={{ padding: "14px 18px", borderRadius: "12px", border: `2px solid ${border}`, background: bg, color, fontFamily: font.body, fontSize: "17px", fontWeight: isSelected || (selected && isCorrect) ? 700 : 400, textAlign: "left", cursor: selected ? "default" : "pointer", transition: "all 0.15s" }}>
+                    {selected && isCorrect ? "✓ " : selected && isSelected ? "✗ " : ""}{a}
+                  </button>
+                );
+              })}
+            </div>
+            {selected && (
+              <div>
+                <Card style={{ background: correct ? colors.greenLight : colors.softYellow, marginBottom: "20px" }}>
+                  <p style={{ fontWeight: 700, color: correct ? colors.green : colors.orange, marginBottom: "4px" }}>{correct ? "🌟 Brilliant!" : "💛 Not quite — that's okay!"}</p>
+                  <p style={{ fontSize: "15px", color: colors.gray700, margin: 0 }}>{correct ? "You understood the passage really well. Keep going!" : `The answer was "${lesson.correct}". Reading it again can help.`}</p>
+                </Card>
+                {isPaid && hesitations.length > 0 && (
+                  <Card style={{ background: colors.purpleLight, border: `2px solid ${colors.purple}`, marginBottom: "20px" }}>
+                    <p style={{ fontWeight: 700, color: colors.purpleDark, marginBottom: "8px" }}>📋 Reading session summary</p>
+                    <p style={{ fontSize: "15px", color: colors.gray700, margin: 0 }}>
+                      We noticed {hesitations.length} word{hesitations.length > 1 ? "s" : ""} where the reader paused: <strong>{hesitations.map((h) => h.word.replace(/[^a-zA-Z']/g, "")).join(", ")}</strong>. Try practising these together!
+                    </p>
+                  </Card>
+                )}
+                <PrimaryBtn onClick={() => setStage("done")}>Finish lesson →</PrimaryBtn>
+              </div>
+            )}
+          </div>
+        )}
+
+        {stage === "done" && (
+          <div style={{ textAlign: "center" }}>
+            <div style={{ fontSize: "72px", marginBottom: "16px" }}>🎉</div>
+            <h2 style={{ fontFamily: font.display, fontSize: "32px", marginBottom: "12px" }}>Lesson complete!</h2>
+            <p style={{ color: colors.gray700, fontSize: "18px", marginBottom: "32px" }}>
+              {correct ? "You nailed the comprehension check too. That's a double win!" : "You finished the lesson and gave it your best shot. That's what counts."}
+            </p>
+            {isPaid && hesitations.length > 0 && (
+              <Card style={{ marginBottom: "24px", textAlign: "left" }}>
+                <p style={{ fontWeight: 700, color: colors.purpleDark, marginBottom: "8px", fontFamily: font.display }}>🎯 Words to revisit</p>
+                <p style={{ fontSize: "14px", color: colors.gray500, marginBottom: "12px" }}>Tap any word to see how to say it!</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {hesitations.map((h, i) => (
+                    <button key={i} onClick={() => setSyllableWord(h.word.replace(/[^a-zA-Z']/g, ""))} style={{ background: colors.orangeLight, border: `2px solid ${colors.orange}`, borderRadius: "8px", padding: "6px 14px", fontSize: "16px", fontWeight: 700, color: colors.orange, cursor: "pointer", fontFamily: font.body }}>
+                      {h.word.replace(/[^a-zA-Z']/g, "")} 🔍
+                    </button>
+                  ))}
+                </div>
+                <p style={{ fontSize: "13px", color: colors.gray500, marginTop: "8px" }}>Share this with a parent or teacher to practise together.</p>
+              </Card>
+            )}
+
+            {skippedWords.length > 0 && (
+              <div style={{ background: colors.softYellow, border: `2px solid #FDE68A`, borderRadius: "16px", padding: "20px", marginBottom: "24px", textAlign: "left" }}>
+                <p style={{ fontWeight: 700, color: colors.orange, marginBottom: "4px", fontFamily: font.display, fontSize: "16px" }}>⏭ Words to come back to</p>
+                <p style={{ fontSize: "13px", color: colors.gray500, marginBottom: "12px" }}>These were skipped — practise them when you're ready!</p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  {skippedWords.map((w, i) => (
+                    <button key={i} onClick={() => setSyllableWord(w)} style={{ background: colors.white, border: `2px solid ${colors.orange}`, borderRadius: "8px", padding: "6px 14px", fontSize: "16px", fontWeight: 700, color: colors.orange, cursor: "pointer", fontFamily: font.body }}>
+                      {w} 📖
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <PrimaryBtn onClick={onComplete}>Back to my plan →</PrimaryBtn>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
