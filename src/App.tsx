@@ -239,7 +239,7 @@ function GeneratingScreen({ profile }: { profile: ChildProfile }) {
   );
 }
 
-function DashboardScreen({ profile, plan, completedLessons, onStartLesson, onBack, onNextWeek }: { profile: ChildProfile; plan: LessonPlan; completedLessons: number[]; onStartLesson: (idx: number) => void; onBack: () => void; onNextWeek: () => void }) {
+function DashboardScreen({ profile, plan, completedLessons, isPaid, onStartLesson, onBack, onNextWeek }: { profile: ChildProfile; plan: LessonPlan; completedLessons: number[]; isPaid: boolean; onStartLesson: (idx: number) => void; onBack: () => void; onNextWeek: () => void }) {
   const allDone = completedLessons.length === plan.lessons.length;
   return (
     <div style={{ minHeight: "100vh", background: colors.cream }}>
@@ -289,18 +289,29 @@ function DashboardScreen({ profile, plan, completedLessons, onStartLesson, onBac
         </Card>
 
         {allDone && (
-          <div style={{ marginTop: "28px", background: `linear-gradient(135deg, ${colors.green}, #047857)`, borderRadius: "20px", padding: "28px", color: colors.white, textAlign: "center" }}>
-            <div style={{ fontSize: "48px", marginBottom: "12px" }}>🎉</div>
-            <h2 style={{ fontFamily: font.display, fontSize: "24px", marginBottom: "8px" }}>
-              {profile.name} finished the week!
-            </h2>
-            <p style={{ opacity: 0.9, fontSize: "16px", marginBottom: "24px" }}>
-              What an achievement! Ready to build next week's plan?
-            </p>
-            <button onClick={onNextWeek} style={{ padding: "16px 32px", background: colors.white, color: colors.green, border: "none", borderRadius: "12px", fontWeight: 800, fontSize: "18px", cursor: "pointer", fontFamily: font.display, width: "100%" }}>
-              Build next week's plan ✨
-            </button>
-          </div>
+          isPaid ? (
+            <div style={{ marginTop: "28px", background: `linear-gradient(135deg, ${colors.green}, #047857)`, borderRadius: "20px", padding: "28px", color: colors.white, textAlign: "center" }}>
+              <div style={{ fontSize: "48px", marginBottom: "12px" }}>🎉</div>
+              <h2 style={{ fontFamily: font.display, fontSize: "24px", marginBottom: "8px" }}>{profile.name} finished the week!</h2>
+              <p style={{ opacity: 0.9, fontSize: "16px", marginBottom: "24px" }}>What an achievement! Ready to build next week's plan?</p>
+              <button onClick={onNextWeek} style={{ padding: "16px 32px", background: colors.white, color: colors.green, border: "none", borderRadius: "12px", fontWeight: 800, fontSize: "18px", cursor: "pointer", fontFamily: font.display, width: "100%" }}>
+                Build next week's plan ✨
+              </button>
+            </div>
+          ) : (
+            <div style={{ marginTop: "28px", background: `linear-gradient(135deg, ${colors.purpleDark}, ${colors.purple})`, borderRadius: "20px", padding: "28px", color: colors.white, textAlign: "center" }}>
+              <div style={{ fontSize: "48px", marginBottom: "12px" }}>🌟</div>
+              <h2 style={{ fontFamily: font.display, fontSize: "24px", marginBottom: "8px" }}>{profile.name} completed the free lesson!</h2>
+              <p style={{ opacity: 0.9, fontSize: "16px", marginBottom: "8px" }}>
+                Ready for Week 2? Unlock personalised AI lesson plans built specifically for {profile.name} — a new plan every single week.
+              </p>
+              <p style={{ opacity: 0.7, fontSize: "14px", marginBottom: "24px" }}>Early Access — $29/month. Price locked forever.</p>
+              <button onClick={onNextWeek} style={{ padding: "16px 32px", background: "#FCD34D", color: colors.purpleDark, border: "none", borderRadius: "12px", fontWeight: 800, fontSize: "18px", cursor: "pointer", fontFamily: font.display, width: "100%", marginBottom: "12px" }}>
+                Unlock Week 2 — $29/month →
+              </button>
+              <p style={{ opacity: 0.6, fontSize: "13px" }}>No commitment. Cancel anytime.</p>
+            </div>
+          )
         )}
       </div>
     </div>
@@ -337,7 +348,7 @@ function PaywallScreen({ onBack }: { onBack: () => void }) {
           <p style={{ fontSize: "13px", fontWeight: 700, color: colors.purple, marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.08em" }}>Early Access</p>
           <p style={{ fontFamily: font.display, fontSize: "48px", fontWeight: 800, color: colors.purpleDark }}>$29<span style={{ fontSize: "18px", color: colors.gray500 }}>/mo</span></p>
           <p style={{ color: colors.gray500, fontSize: "14px", marginBottom: "20px" }}>Price locked for early members — never goes up.</p>
-          {["Personalised AI lesson plan each week", "Dyslexia-friendly reading sessions", "🎤 Microphone reading mode", "🔍 Hesitation detection & word reports", "🔊 Read-aloud with word highlighting", "📖 Syllable breakdown for hard words", "🔄 New plan every week automatically", "Progress tracking for parents", "Cancel anytime"].map((f) => (
+          {["Personalised AI lesson plan each week", "Dyslexia-friendly reading sessions", "🎤 Microphone reading mode", "🔍 Hesitation detection & word reports", "🔊 Read-aloud with word highlighting", "📖 Syllable breakdown for hard words", "⏭ Skip & practise later feature", "🔄 New plan every week automatically", "Progress tracking for parents", "Cancel anytime"].map((f) => (
             <p key={f} style={{ textAlign: "left", padding: "6px 0", fontSize: "15px", color: colors.gray700, borderBottom: `1px solid ${colors.gray100}` }}>✓ {f}</p>
           ))}
         </Card>
@@ -350,9 +361,9 @@ function PaywallScreen({ onBack }: { onBack: () => void }) {
 
 function PricingScreen({ onBack, onStart }: { onBack: () => void; onStart: () => void }) {
   const familyPlans = [
-    { name: "Early Access", badge: "⚡ Limited spots", price: "$29", period: "/month", note: "Price locked forever for early members", color: colors.orange, features: ["1 child profile", "AI-generated weekly lesson plan", "Word highlighting & read-aloud", "🎤 Mic reading mode", "🔍 Hesitation detection", "📖 Syllable breakdown popup", "🔄 New plan every week", "Comprehension checks", "Progress tracking", "Cancel anytime"], cta: "Get Early Access", href: STRIPE_URL, highlight: true },
-    { name: "Individual Family", badge: "Coming soon", price: "$39", period: "/month", note: "For families joining after early access", color: colors.purple, features: ["1 child profile", "AI-generated weekly lesson plan", "Word highlighting & read-aloud", "🎤 Mic reading mode", "🔍 Hesitation detection", "📖 Syllable breakdown popup", "🔄 New plan every week", "Comprehension checks", "Progress tracking", "Cancel anytime"], cta: "Coming Soon", href: null, highlight: false },
-    { name: "Family Plus", badge: "Coming soon", price: "$49", period: "/month", note: "Support up to 3 children", color: colors.green, features: ["Up to 3 child profiles", "Individual AI plans per child", "Word highlighting & read-aloud", "🎤 Mic reading mode", "🔍 Hesitation detection", "📖 Syllable breakdown popup", "🔄 New plan every week", "Comprehension checks", "Progress tracking per child", "Cancel anytime"], cta: "Coming Soon", href: null, highlight: false },
+    { name: "Early Access", badge: "⚡ Limited spots", price: "$29", period: "/month", note: "Price locked forever for early members", color: colors.orange, features: ["1 child profile", "AI-generated weekly lesson plan", "Word highlighting & read-aloud", "🎤 Mic reading mode", "🔍 Hesitation detection", "📖 Syllable breakdown popup", "⏭ Skip & practise later", "🔄 New plan every week", "Comprehension checks", "Progress tracking", "Cancel anytime"], cta: "Get Early Access", href: STRIPE_URL, highlight: true },
+    { name: "Individual Family", badge: "Coming soon", price: "$39", period: "/month", note: "For families joining after early access", color: colors.purple, features: ["1 child profile", "AI-generated weekly lesson plan", "Word highlighting & read-aloud", "🎤 Mic reading mode", "🔍 Hesitation detection", "📖 Syllable breakdown popup", "⏭ Skip & practise later", "🔄 New plan every week", "Comprehension checks", "Progress tracking", "Cancel anytime"], cta: "Coming Soon", href: null, highlight: false },
+    { name: "Family Plus", badge: "Coming soon", price: "$49", period: "/month", note: "Support up to 3 children", color: colors.green, features: ["Up to 3 child profiles", "Individual AI plans per child", "Word highlighting & read-aloud", "🎤 Mic reading mode", "🔍 Hesitation detection", "📖 Syllable breakdown popup", "⏭ Skip & practise later", "🔄 New plan every week", "Comprehension checks", "Progress tracking per child", "Cancel anytime"], cta: "Coming Soon", href: null, highlight: false },
   ];
 
   const schoolPlans = [
@@ -456,7 +467,6 @@ function PricingScreen({ onBack, onStart }: { onBack: () => void; onStart: () =>
 export default function App() {
   const isSuccess = getParam("success") === "true";
   const startDirect = getParam("start") === "true";
-  const isPaid = isSuccess;
 
   const [screen, setScreen] = useState<Screen>(
     isSuccess ? "success" : startDirect ? "onboarding" : "landing"
@@ -510,6 +520,10 @@ export default function App() {
   }
 
   function handleNextWeek() {
+    if (!isSuccess) {
+      setScreen("paywall");
+      return;
+    }
     setCompletedLessons([]);
     setPlan(null);
     if (profile) buildPlan(profile);
@@ -530,11 +544,27 @@ export default function App() {
   if (screen === "generating" && profile) return <GeneratingScreen profile={profile} />;
 
   if (screen === "dashboard" && profile && plan) return (
-    <DashboardScreen profile={profile} plan={plan} completedLessons={completedLessons} onStartLesson={(idx) => { setActiveLessonIdx(idx); setScreen("lesson"); }} onBack={() => setScreen("landing")} onNextWeek={handleNextWeek} />
+    <DashboardScreen
+      profile={profile}
+      plan={plan}
+      completedLessons={completedLessons}
+      isPaid={isSuccess}
+      onStartLesson={(idx) => { setActiveLessonIdx(idx); setScreen("lesson"); }}
+      onBack={() => setScreen("landing")}
+      onNextWeek={handleNextWeek}
+    />
   );
 
   if (screen === "lesson" && plan) return (
-    <LessonScreen lesson={plan.lessons[activeLessonIdx]} lessonIdx={activeLessonIdx} totalLessons={plan.lessons.length} isPaid={isPaid} onComplete={handleLessonComplete} onBack={() => setScreen("dashboard")} onUpgrade={() => setScreen("paywall")} />
+    <LessonScreen
+      lesson={plan.lessons[activeLessonIdx]}
+      lessonIdx={activeLessonIdx}
+      totalLessons={plan.lessons.length}
+      isPaid={isSuccess}
+      onComplete={handleLessonComplete}
+      onBack={() => setScreen("dashboard")}
+      onUpgrade={() => setScreen("paywall")}
+    />
   );
 
   return null;
